@@ -947,53 +947,53 @@
         }
 
         function generateDetailedEewText(data) {
-            if (data.isCancel) {
-                return "先程の緊急地震速報は取り消されました。";
+    if (data.isCancel) {
+        return "先程の緊急地震速報は取り消されました。";
+    }
+
+    let magnitude = data.Magunitude;
+    magnitude = typeof magnitude === "number" || (typeof magnitude === "string" && !isNaN(magnitude))
+        ? parseFloat(magnitude).toFixed(1)
+        : "不明";
+
+    let depth = data.Depth;
+    depth = typeof depth === "number" || (typeof depth === "string" && !isNaN(depth))
+        ? `約${parseFloat(depth)}km`
+        : "不明";
+
+    const time = formatEewDateTime(data.OriginTime); // 修正: 新しい関数を使用
+    const isWarning = data.Title && data.Title.includes('警報');
+    const alertType = isWarning ? '(警報)' : '(予報)';
+
+    let formattedMessage = `【EWC緊急地震速報${alertType}】\n震源地：${data.Hypocenter}\n推定最大震度：${data.MaxIntensity}\n規模：M${magnitude}\n深さ：${depth}\n日時：${time}頃`; // 修正: 日時のフォーマット変更
+
+    if (data.WarnArea && Array.isArray(data.WarnArea) && data.WarnArea.length > 0) {
+        const areasByShindo = {};
+        data.WarnArea.forEach(area => {
+            const shindo = area.Shindo1;
+            if (shindo) {
+                areasByShindo[shindo] = areasByShindo[shindo] || [];
+                areasByShindo[shindo].push(area.Chiiki);
             }
+        });
 
-            let magnitude = data.Magunitude;
-            magnitude = typeof magnitude === "number" || (typeof magnitude === "string" && !isNaN(magnitude))
-                ? parseFloat(magnitude).toFixed(1)
-                : "不明";
+        const shindoOrder = ['7', '6強', '6弱', '5強', '5弱', '4', '3', '2', '1'];
+        const sortedShindos = Object.keys(areasByShindo).sort((a, b) => shindoOrder.indexOf(a) - shindoOrder.indexOf(b));
 
-            let depth = data.Depth;
-            depth = typeof depth === "number" || (typeof depth === "string" && !isNaN(depth))
-                ? `約${parseFloat(depth)}km`
-                : "不明";
-
-            const time = data.OriginTime ? data.OriginTime.split(' ')[1] : '不明';
-            const isWarning = data.Title && data.Title.includes('警報');
-            const alertType = isWarning ? '(警報)' : '(予報)';
-
-            let formattedMessage = `【EWC緊急地震速報${alertType}】\n震源地：${data.Hypocenter}\n推定最大震度：${data.MaxIntensity}\n規模：M${magnitude}\n深さ：${depth}\n日時：${time}頃`;
-
-            if (data.WarnArea && Array.isArray(data.WarnArea) && data.WarnArea.length > 0) {
-                const areasByShindo = {};
-                data.WarnArea.forEach(area => {
-                    const shindo = area.Shindo1;
-                    if (shindo) {
-                        areasByShindo[shindo] = areasByShindo[shindo] || [];
-                        areasByShindo[shindo].push(area.Chiiki);
-                    }
-                });
-
-                const shindoOrder = ['7', '6強', '6弱', '5強', '5弱', '4', '3', '2', '1'];
-                const sortedShindos = Object.keys(areasByShindo).sort((a, b) => shindoOrder.indexOf(a) - shindoOrder.indexOf(b));
-
-                if (sortedShindos.length > 0) {
-                    formattedMessage += `\n\n[予想される震度]`;
-                    sortedShindos.forEach(shindo => {
-                        formattedMessage += `\n《最大震度${shindo}》\n${areasByShindo[shindo].join('、')}`;
-                    });
-                }
-            }
-
-            if (data.isAssumption) {
-                formattedMessage += "\n\n※この緊急地震速報は精度が低い可能性があります※";
-            }
-
-            return formattedMessage;
+        if (sortedShindos.length > 0) {
+            formattedMessage += `\n\n[予想される震度]`;
+            sortedShindos.forEach(shindo => {
+                formattedMessage += `\n《最大震度${shindo}》\n${areasByShindo[shindo].join('、')}`;
+            });
         }
+    }
+
+    if (data.isAssumption) {
+        formattedMessage += "\n\n※この緊急地震速報は精度が低い可能性があります※";
+    }
+
+    return formattedMessage;
+}
 
         function generateDetailedTsunamiText(tsunami, detailedData) {
             const time = new Date(tsunami.at);
@@ -1186,60 +1186,60 @@
         }
 
         function displayEewList(data) {
-            const container = document.getElementById('eewList');
-            container.innerHTML = '';
-            
-            if (!data.Title || !data.CodeType) {
-                container.innerHTML = `
-                    <div class="empty-state">
-                        <div class="empty-icon">⚡</div>
-                        <div>現在、緊急地震速報は発表されていません</div>
-                    </div>
-                `;
-                return;
-            }
+    const container = document.getElementById('eewList');
+    container.innerHTML = '';
+    
+    if (!data.Title || !data.CodeType) {
+        container.innerHTML = `
+            <div class="empty-state">
+                <div class="empty-icon">⚡</div>
+                <div>現在、緊急地震速報は発表されていません</div>
+            </div>
+        `;
+        return;
+    }
 
-            const listItem = document.createElement('div');
-            listItem.className = 'list-item';
-            
-            const time = data.OriginTime ? data.OriginTime.split(' ')[1] : '';
-            const isCancel = data.isCancel;
-            const maxIntensity = data.MaxIntensity || '';
-            const hypocenter = data.Hypocenter || '';
-            
-            let badgeClass = 'warning';
-            let badgeText = '緊急地震速報';
-            
-            if (isCancel) {
-                badgeClass = 'info';
-                badgeText = '取消';
-            }
-            
-            listItem.innerHTML = `
-                <div class="list-item-content" onclick="showEewDetail()">
-                    <div class="list-item-header">
-                        <div class="list-item-title">
-                            <span class="badge ${badgeClass}">${badgeText}</span>
-                            ${isCancel ? '先程の緊急地震速報は取り消されました' : `最大震度${maxIntensity}程度`}
-                        </div>
-                    </div>
-                    ${!isCancel ? `
-                    <div class="list-item-subtitle">${hypocenter} ${time}</div>
-                    <div class="list-item-details">
-                        第${data.Serial}報 - ${data.isAssumption ? '精度が低い可能性があります' : ''}
-                    </div>
-                    ` : ''}
+    const listItem = document.createElement('div');
+    listItem.className = 'list-item';
+    
+    const time = formatEewDateTime(data.OriginTime); // 修正: 新しい関数を使用
+    const isCancel = data.isCancel;
+    const maxIntensity = data.MaxIntensity || '';
+    const hypocenter = data.Hypocenter || '';
+    
+    let badgeClass = 'warning';
+    let badgeText = '緊急地震速報';
+    
+    if (isCancel) {
+        badgeClass = 'info';
+        badgeText = '取消';
+    }
+    
+    listItem.innerHTML = `
+        <div class="list-item-content" onclick="showEewDetail()">
+            <div class="list-item-header">
+                <div class="list-item-title">
+                    <span class="badge ${badgeClass}">${badgeText}</span>
+                    ${isCancel ? '先程の緊急地震速報は取り消されました' : `最大震度${maxIntensity}程度`}
                 </div>
-                <div class="list-item-actions">
-                    <button class="copy-button" onclick="event.stopPropagation(); copyEewInfo(this)" title="詳細情報をコピー">
-                        📋
-                    </button>
-                    <span class="chevron">›</span>
-                </div>
-            `;
-            
-            container.appendChild(listItem);
-        }
+            </div>
+            ${!isCancel ? `
+            <div class="list-item-subtitle">${hypocenter} ${time}</div>
+            <div class="list-item-details">
+                第${data.Serial}報 - ${data.isAssumption ? '精度が低い可能性があります' : ''}
+            </div>
+            ` : ''}
+        </div>
+        <div class="list-item-actions">
+            <button class="copy-button" onclick="event.stopPropagation(); copyEewInfo(this)" title="詳細情報をコピー">
+                📋
+            </button>
+            <span class="chevron">›</span>
+        </div>
+    `;
+    
+    container.appendChild(listItem);
+}
 //display
         function displayTsunamiList(tsunamis) {
             const container = document.getElementById('tsunamiList');
@@ -1499,7 +1499,30 @@ function scrollToWeatherSection() {
                 document.body.style.overflow = '';
             }, 300);
         }
-
+        function formatEewDateTime(originTime) {
+    // OriginTime format: "2026/01/07 18:39:07"
+    if (!originTime) return '不明';
+    
+    const parts = originTime.split(' ');
+    if (parts.length !== 2) return '不明';
+    
+    const datePart = parts[0]; // "2026/01/07"
+    const timePart = parts[1]; // "18:39:07"
+    
+    // 日付を "MM/DD" 形式に変換
+    const dateSegments = datePart.split('/');
+    const month = dateSegments[1];
+    const day = dateSegments[2];
+    
+    // 時刻を "HH:MM" 形式に変換（秒を削除）
+    const timeSegments = timePart.split(':');
+    const hour = timeSegments[0];
+    const minute = timeSegments[1];
+    
+    return `${month}/${day} ${hour}:${minute}`;
+}
+      
+      
         function formatEewMessage(data) {
             let magnitude = data.Magunitude;
             magnitude = typeof magnitude === "number" || (typeof magnitude === "string" && !isNaN(magnitude))
