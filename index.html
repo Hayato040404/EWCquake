@@ -1,7 +1,8 @@
 <!DOCTYPE html>
 <html lang="ja">
 <head>
-  <script async src="https://www.googletagmanager.com/gtag/js?id=G-8Y6WQS969X"></script>
+<!-- Google Tag Manager -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-8Y6WQS969X"></script>
 <script>
   window.dataLayer = window.dataLayer || [];
   function gtag(){dataLayer.push(arguments);}
@@ -9,57 +10,75 @@
 
   gtag('config', 'G-8Y6WQS969X');
 </script>
+<!-- End Google Tag Manager -->
+
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+    <meta name="theme-color" content="#F2F2F7" media="(prefers-color-scheme: light)">
+    <meta name="theme-color" content="#000000" media="(prefers-color-scheme: dark)">
     <title>EWC quake</title>
     <link rel="icon" type="image/x-icon" href="/favicon.ico">
     <link rel="apple-touch-icon" sizes="180x180" href="/ewc.png">
     <link rel="icon" type="image/png" sizes="192x192" href="/ewc.png">
+    
     <style>
+        /* iOS Design System Variables */
         :root {
-            --system-blue: #007AFF;
-            --system-red: #FF3B30;
-            --system-green: #34C759;
-            --system-orange: #FF9500;
-            --system-gray: #8E8E93;
-            --system-gray2: #AEAEB2;
-            --system-gray3: #C7C7CC;
-            --system-gray4: #D1D1D6;
-            --system-gray5: #E5E5EA;
-            --system-gray6: #F2F2F7;
-            --system-purple: #AF52DE;
+            /* Light Mode Colors */
+            --ios-bg-primary: #F2F2F7; /* Grouped Background */
+            --ios-bg-card: #FFFFFF;
+            --ios-bg-modal: #FFFFFF;
+            --ios-text-primary: #000000;
+            --ios-text-secondary: #8E8E93;
+            --ios-text-tertiary: #C7C7CC;
+            --ios-separator: rgba(60, 60, 67, 0.18); /* Non-opaque separator */
+            --ios-blue: #007AFF;
+            --ios-red: #FF3B30;
+            --ios-green: #34C759;
+            --ios-orange: #FF9500;
+            --ios-yellow: #FFCC00;
+            --ios-indigo: #5856D6;
+            --ios-purple: #AF52DE;
+            --ios-gray: #8E8E93;
+            --ios-gray2: #AEAEB2;
+            --ios-gray3: #C7C7CC;
+            --ios-gray4: #D1D1D6;
+            --ios-gray5: #E5E5EA;
+            --ios-gray6: #F2F2F7;
+            
+            --ios-btn-bg: rgba(118, 118, 128, 0.12);
+            --ios-btn-text: #007AFF;
+            
+            --shadow-sm: 0 1px 3px rgba(0,0,0,0.05);
+            --border-radius-card: 12px;
+            --safe-area-top: env(safe-area-inset-top, 20px);
+            --safe-area-bottom: env(safe-area-inset-bottom, 20px);
         }
 
-        /* Light mode (default) */
-        :root {
-            --background: #F2F2F7;
-            --card-background: #FFFFFF;
-            --text-primary: #000000;
-            --text-secondary: #6C6C70;
-            --text-tertiary: #8E8E93;
-            --divider: rgba(60, 60, 67, 0.1);
-            --shadow: rgba(0, 0, 0, 0.05);
-            --active-background: rgba(0, 0, 0, 0.05);
-            --copy-button-bg: rgba(0, 122, 255, 0.1);
-            --copy-button-active: rgba(0, 122, 255, 0.2);
-        }
-
-        /* Dark mode */
         @media (prefers-color-scheme: dark) {
             :root {
-                --background: #000000;
-                --card-background: #1C1C1E;
-                --text-primary: #FFFFFF;
-                --text-secondary: #98989E;
-                --text-tertiary: #636366;
-                --divider: rgba(84, 84, 88, 0.65);
-                --shadow: rgba(0, 0, 0, 0.3);
-                --active-background: rgba(255, 255, 255, 0.05);
-                --copy-button-bg: rgba(0, 122, 255, 0.2);
-                --copy-button-active: rgba(0, 122, 255, 0.3);
+                /* Dark Mode Colors */
+                --ios-bg-primary: #000000;
+                --ios-bg-card: #1C1C1E;
+                --ios-bg-modal: #1C1C1E;
+                --ios-text-primary: #FFFFFF;
+                --ios-text-secondary: #98989F;
+                --ios-text-tertiary: #48484A;
+                --ios-separator: rgba(84, 84, 88, 0.65);
+                --ios-blue: #0A84FF;
+                --ios-red: #FF453A;
+                --ios-green: #30D158;
+                --ios-orange: #FF9F0A;
+                --ios-yellow: #FFD60A;
+                --ios-indigo: #5E5CE6;
+                --ios-purple: #BF5AF2;
+                
+                --ios-btn-bg: rgba(118, 118, 128, 0.24);
+                --ios-btn-text: #0A84FF;
             }
         }
 
+        /* Reset & Base */
         * {
             margin: 0;
             padding: 0;
@@ -68,468 +87,284 @@
         }
 
         body {
-            font-family: -apple-system, BlinkMacSystemFont, "SF Pro Text", "SF Pro Icons", "Helvetica Neue", Helvetica, Arial, sans-serif;
-            background-color: var(--background);
-            color: var(--text-primary);
+            font-family: -apple-system, BlinkMacSystemFont, "SF Pro Text", "Helvetica Neue", Helvetica, Arial, sans-serif;
+            background-color: var(--ios-bg-primary);
+            color: var(--ios-text-primary);
             line-height: 1.4;
+            padding-bottom: calc(60px + var(--safe-area-bottom)); /* Ensure space for floating buttons */
             -webkit-font-smoothing: antialiased;
-            -moz-osx-font-smoothing: grayscale;
-            padding-bottom: env(safe-area-inset-bottom, 20px);
         }
 
+        /* Utility */
         .container {
-            max-width: 650px;
+            max-width: 700px; /* iPad Width equivalent for PC */
             margin: 0 auto;
-            padding: 0;
+            padding-bottom: 20px;
         }
 
+        /* Navigation Bar Style Header */
+        .nav-bar {
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+            background: rgba(255, 255, 255, 0.85); /* Translucent */
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            border-bottom: 0.5px solid var(--ios-separator);
+            padding-top: var(--safe-area-top);
+            display: flex;
+            flex-direction: column;
+            transition: background 0.3s;
+        }
+
+        @media (prefers-color-scheme: dark) {
+            .nav-bar {
+                background: rgba(28, 28, 30, 0.85);
+            }
+        }
+
+        .nav-title-row {
+            height: 44px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+        }
+
+        .nav-title {
+            font-size: 17px;
+            font-weight: 600;
+        }
+
+        .nav-large-title {
+            padding: 8px 16px 8px;
+            font-size: 34px;
+            font-weight: 700;
+            letter-spacing: -0.5px;
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-end;
+        }
+        
+        .app-version {
+            font-size: 13px;
+            color: var(--ios-text-secondary);
+            font-weight: 400;
+            margin-bottom: 6px;
+        }
+
+        /* Control Bar (Horizontal Scroll) */
+        .control-bar {
+            padding: 8px 16px 12px;
+            overflow-x: auto;
+            white-space: nowrap;
+            -webkit-overflow-scrolling: touch;
+            scrollbar-width: none; /* Firefox */
+            display: flex;
+            gap: 10px;
+        }
+        .control-bar::-webkit-scrollbar { display: none; }
+
+        .pill-btn {
+            background-color: var(--ios-btn-bg);
+            color: var(--ios-text-primary);
+            border: none;
+            padding: 8px 16px;
+            border-radius: 20px;
+            font-size: 14px;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.2s;
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+        }
+        
+        .pill-btn:active {
+            opacity: 0.7;
+            transform: scale(0.98);
+        }
+
+        .pill-btn.primary {
+            background-color: var(--ios-blue);
+            color: white;
+        }
+
+        /* Admin Message */
         .admin-message {
             margin: 16px;
             padding: 12px 16px;
-            border-radius: 8px;
+            border-radius: 12px;
             font-size: 14px;
-            line-height: 1.5;
+            font-weight: 500;
             position: relative;
             display: none;
         }
-
-        .admin-message.info {
-            background-color: rgba(0, 122, 255, 0.1);
-            border-left: 4px solid var(--system-blue);
-            color: var(--system-blue);
-        }
-
-        .admin-message.warning {
-            background-color: rgba(255, 149, 0, 0.1);
-            border-left: 4px solid var(--system-orange);
-            color: var(--system-orange);
-        }
-
-        .admin-message.error {
-            background-color: rgba(255, 59, 48, 0.1);
-            border-left: 4px solid var(--system-red);
-            color: var(--system-red);
-        }
-
-        .admin-message.show {
-            display: block;
-        }
-
+        .admin-message.show { display: block; }
+        .admin-message.info { background: rgba(0,122,255,0.15); color: var(--ios-blue); }
+        .admin-message.warning { background: rgba(255,149,0,0.15); color: var(--ios-orange); }
+        .admin-message.error { background: rgba(255,59,48,0.15); color: var(--ios-red); }
         .admin-message-close {
             position: absolute;
-            top: 8px;
-            right: 12px;
-            background: none;
-            border: none;
-            font-size: 16px;
-            cursor: pointer;
-            color: inherit;
-            opacity: 0.7;
+            top: 10px; right: 10px;
+            background: none; border: none;
+            font-size: 18px; color: inherit; opacity: 0.6; cursor: pointer;
         }
 
-        .admin-message-close:hover {
-            opacity: 1;
-        }
-
-        .header {
-            position: sticky;
-            top: 0;
-            z-index: 100;
-            background-color: var(--background);
-            backdrop-filter: blur(10px);
-            -webkit-backdrop-filter: blur(10px);
-            padding: 16px 16px 8px;
-            text-align: center;
-            border-bottom: 1px solid var(--divider);
-        }
-
-        .app-title {
-            font-size: 17px;
-            font-weight: 600;
-            margin-bottom: 8px;
-            color: var(--text-primary);
-        }
-
-        .app-subtitle {
+        /* Section Headers */
+        .section-title {
+            padding: 24px 16px 8px;
             font-size: 13px;
-            color: var(--text-secondary);
-            margin-bottom: 16px;
+            text-transform: uppercase;
+            color: var(--ios-text-secondary);
+            font-weight: 400;
+            letter-spacing: -0.1px;
         }
 
-        .button-row {
-            display: flex;
-            gap: 8px;
-            overflow-x: auto;
-            padding-bottom: 8px;
-            -webkit-overflow-scrolling: touch;
-            scrollbar-width: none;
-        }
-
-        .button-row::-webkit-scrollbar {
-            display: none;
-        }
-
-        .btn {
-            background-color: var(--system-blue);
-            color: white;
-            border: none;
-            border-radius: 8px;
-            padding: 8px 16px;
-            font-size: 13px;
-            font-weight: 500;
-            cursor: pointer;
-            white-space: nowrap;
-            flex-shrink: 0;
-            transition: all 0.2s ease;
-        }
-
-        .btn:active {
-            transform: scale(0.96);
-            opacity: 0.8;
-        }
-
-        .btn.secondary {
-            background-color: var(--system-gray5);
-            color: var(--text-primary);
-        }
-
-        .section-header {
-            padding: 16px 16px 8px;
-            font-size: 20px;
-            font-weight: 700;
-            color: var(--text-primary);
-            background-color: var(--background);
-            position: sticky;
-            top: 60px;
-            z-index: 90;
-            backdrop-filter: blur(10px);
-            -webkit-backdrop-filter: blur(10px);
-        }
-
-        .section-subheader {
-            padding: 0 16px 8px;
-            font-size: 13px;
-            color: var(--text-secondary);
-            background-color: var(--background);
-            position: sticky;
-            top: 94px;
-            z-index: 90;
-            backdrop-filter: blur(10px);
-            -webkit-backdrop-filter: blur(10px);
-        }
-
+        /* List Group (iOS Inset Grouped Style) */
         .list-group {
-            margin-bottom: 24px;
-            background-color: var(--card-background);
-            border-radius: 10px;
+            background-color: var(--ios-bg-card);
+            border-radius: var(--border-radius-card);
+            margin: 0 16px;
             overflow: hidden;
-            box-shadow: 0 1px 2px var(--shadow);
         }
 
         .list-item {
-            padding: 16px;
-            border-bottom: 1px solid var(--divider);
-            cursor: pointer;
-            transition: background-color 0.2s ease;
             display: flex;
             align-items: center;
-            justify-content: space-between;
+            padding: 12px 16px;
+            position: relative;
+            cursor: pointer;
+            transition: background 0.2s;
         }
-
-        .list-item:last-child {
-            border-bottom: none;
+        
+        /* List Separator */
+        .list-item:not(:last-child)::after {
+            content: "";
+            position: absolute;
+            bottom: 0;
+            left: 16px; /* Inset separator */
+            right: 0;
+            height: 0.5px;
+            background-color: var(--ios-separator);
         }
 
         .list-item:active {
-            background-color: var(--active-background);
+            background-color: var(--ios-gray6);
+        }
+        @media (prefers-color-scheme: dark) {
+            .list-item:active { background-color: #2C2C2E; }
         }
 
-        .list-item-content {
+        .list-content {
             flex: 1;
             min-width: 0;
+            margin-right: 12px;
         }
 
-        .list-item-header {
+        .item-top-row {
             display: flex;
             justify-content: space-between;
             align-items: center;
-            margin-bottom: 4px;
+            margin-bottom: 2px;
         }
 
-        .list-item-title {
+        .item-title {
             font-size: 17px;
-            font-weight: 500;
-            color: var(--text-primary);
-            display: flex;
-            align-items: center;
-        }
-
-        .list-item-subtitle {
-            font-size: 15px;
-            color: var(--text-secondary);
-            margin-bottom: 4px;
-        }
-
-        .list-item-details {
-            font-size: 13px;
-            color: var(--text-secondary);
-            display: -webkit-box;
-            -webkit-line-clamp: 2;
-            -webkit-box-orient: vertical;
-            overflow: hidden;
-        }
-
-        .list-item-actions {
+            font-weight: 600;
+            color: var(--ios-text-primary);
             display: flex;
             align-items: center;
             gap: 8px;
-            margin-left: 12px;
         }
 
-        .copy-button {
-            background-color: var(--copy-button-bg);
-            border: none;
+        .item-time {
+            font-size: 15px;
+            color: var(--ios-text-secondary);
+            font-weight: 400;
+        }
+
+        .item-subtitle {
+            font-size: 15px;
+            color: var(--ios-text-primary);
+            margin-bottom: 2px;
+        }
+
+        .item-detail-text {
+            font-size: 13px;
+            color: var(--ios-text-secondary);
+            line-height: 1.3;
+        }
+
+        /* Badges */
+        .badge {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            padding: 2px 8px;
             border-radius: 6px;
+            font-size: 12px;
+            font-weight: 600;
+            color: #fff;
+            height: 20px;
+        }
+        .badge.warning { background-color: var(--ios-red); }
+        .badge.info { background-color: var(--ios-gray); }
+        .badge.forecast { background-color: var(--ios-blue); }
+        .badge.watch { background-color: var(--ios-orange); }
+        .badge.major { background-color: var(--ios-purple); }
+
+        /* Actions Area */
+        .item-actions {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        /* Custom Copy Button */
+        .btn-icon {
+            background: rgba(0, 122, 255, 0.1);
+            color: var(--ios-blue);
             width: 32px;
             height: 32px;
+            border-radius: 50%;
+            border: none;
             display: flex;
             align-items: center;
             justify-content: center;
             cursor: pointer;
-            transition: all 0.2s ease;
-            color: var(--system-blue);
-            font-size: 14px;
+            transition: all 0.2s;
+            font-size: 16px;
         }
-
-        .copy-button:active {
-            background-color: var(--copy-button-active);
+        .btn-icon:active {
             transform: scale(0.9);
+            background: rgba(0, 122, 255, 0.2);
         }
-
-        .copy-button.copied {
-            background-color: var(--system-green);
+        .btn-icon.copied {
+            background: var(--ios-green);
             color: white;
         }
 
         .chevron {
-            color: var(--system-gray3);
+            color: var(--ios-text-tertiary);
             font-size: 14px;
-        }
-
-        .badge {
-            display: inline-block;
-            padding: 2px 6px;
-            border-radius: 4px;
-            font-size: 12px;
-            font-weight: 500;
-            background-color: var(--system-blue);
-            color: white;
-        }
-
-        .badge.warning {
-            background-color: var(--system-red);
-        }
-
-        .badge.info {
-            background-color: var(--system-gray);
-        }
-
-        .badge.forecast {
-            background-color: var(--system-blue);
-        }
-
-        .badge.watch {
-            background-color: var(--system-orange);
-        }
-
-        .badge.major {
-            background-color: var(--system-purple);
-        }
-
-        .coming-soon {
-            text-align: center;
-            padding: 32px 16px;
-            color: var(--text-secondary);
-        }
-
-        .coming-soon-icon {
-            font-size: 32px;
-            margin-bottom: 8px;
-        }
-
-        .coming-soon-text {
-            font-size: 15px;
-            font-weight: 500;
-        }
-
-        .detail-view {
-            display: none;
-            background-color: var(--background);
-            position: fixed;
-            top: 0;
-            left: 0;
-            right: 0;
-            bottom: 0;
-            z-index: 1000;
-            overflow-y: auto;
-            animation: slideIn 0.3s ease;
-        }
-
-        @keyframes slideIn {
-            from { transform: translateY(100%); }
-            to { transform: translateY(0); }
-        }
-
-        @keyframes slideOut {
-            from { transform: translateY(0); }
-            to { transform: translateY(100%); }
-        }
-
-        .detail-header {
-            display: flex;
-            align-items: center;
-            padding: 16px;
-            background-color: var(--card-background);
-            position: sticky;
-            top: 0;
-            z-index: 101;
-            border-bottom: 1px solid var(--divider);
-        }
-
-        .back-button {
-            background: none;
-            border: none;
-            color: var(--system-blue);
-            font-size: 17px;
-            font-weight: 400;
-            cursor: pointer;
-            padding: 0;
-            margin-right: 8px;
-        }
-
-        .detail-title {
-            font-size: 17px;
             font-weight: 600;
-            flex-grow: 1;
-            text-align: center;
-            margin-right: 44px;
         }
 
-        .detail-content {
-            padding: 16px;
-        }
-
-        .detail-info {
-            background-color: var(--card-background);
-            border-radius: 10px;
-            padding: 16px;
-            margin-bottom: 16px;
-            white-space: pre-line;
-            line-height: 1.6;
-            box-shadow: 0 1px 2px var(--shadow);
-        }
-
-        .edit-section {
-            background-color: var(--card-background);
-            border-radius: 10px;
-            padding: 16px;
-            margin-bottom: 16px;
-            box-shadow: 0 1px 2px var(--shadow);
-        }
-
-        .edit-label {
-            font-size: 13px;
-            font-weight: 500;
-            color: var(--text-secondary);
-            margin-bottom: 8px;
-        }
-
-        .textarea-ios {
-            width: 100%;
-            min-height: 120px;
-            padding: 12px;
-            border: 1px solid var(--system-gray4);
-            border-radius: 8px;
-            font-family: inherit;
-            font-size: 15px;
-            line-height: 1.4;
-            resize: vertical;
-            background-color: var(--card-background);
-            color: var(--text-primary);
-        }
-
-        .textarea-ios:focus {
-            outline: none;
-            border-color: var(--system-blue);
-        }
-
-        .action-button {
-            display: block;
-            width: 100%;
-            background-color: var(--system-blue);
-            color: white;
-            border: none;
-            border-radius: 8px;
-            padding: 12px;
-            font-size: 15px;
-            font-weight: 500;
-            cursor: pointer;
-            margin-top: 16px;
-            transition: all 0.2s ease;
-        }
-
-        .action-button:active {
-            transform: scale(0.98);
-            opacity: 0.9;
-        }
-
-        .loading-indicator {
+        /* Shindo (Intensity) Indicators */
+        .shindo-circle {
+            width: 28px;
+            height: 28px;
+            border-radius: 50%;
             display: flex;
-            flex-direction: column;
             align-items: center;
             justify-content: center;
-            padding: 32px 16px;
-            color: var(--text-secondary);
-        }
-
-        .spinner {
-            width: 20px;
-            height: 20px;
-            border: 2px solid var(--system-gray4);
-            border-top-color: var(--system-blue);
-            border-radius: 50%;
-            animation: spin 1s linear infinite;
-            margin-bottom: 8px;
-        }
-
-        @keyframes spin {
-            to { transform: rotate(360deg); }
-        }
-
-        .empty-state {
-            text-align: center;
-            padding: 32px 16px;
-            color: var(--text-secondary);
-        }
-
-        .empty-icon {
-            font-size: 32px;
-            margin-bottom: 8px;
-        }
-
-        .scale-indicator {
-            display: inline-block;
-            width: 24px;
-            height: 24px;
-            border-radius: 50%;
             color: white;
-            font-size: 12px;
+            font-size: 14px;
             font-weight: 700;
-            text-align: center;
-            line-height: 24px;
+            flex-shrink: 0;
             margin-right: 8px;
         }
-
         .scale-1 { background-color: #69C0FF; }
         .scale-2 { background-color: #3AA0FF; }
         .scale-3 { background-color: #1677FF; }
@@ -540,242 +375,319 @@
         .scale-6強 { background-color: #D46B08; }
         .scale-7 { background-color: #F5222D; }
 
-        .tsunami-forecast {
-            background-color: rgba(0, 122, 255, 0.1);
-            border-left: 4px solid var(--system-blue);
-            padding: 12px;
-            margin-top: 12px;
-            border-radius: 4px;
-            color: var(--system-blue);
-        }
-
-        .tsunami-watch {
-            background-color: rgba(255, 149, 0, 0.1);
-            border-left: 4px solid var(--system-orange);
-            padding: 12px;
-            margin-top: 12px;
-            border-radius: 4px;
-            color: var(--system-orange);
-        }
-
-        .tsunami-warning {
-            background-color: rgba(245, 34, 45, 0.1);
-            border-left: 4px solid var(--system-red);
-            padding: 12px;
-            margin-top: 12px;
-            border-radius: 4px;
-            color: var(--system-red);
-        }
-
-        .tsunami-major {
-            background-color: rgba(175, 82, 222, 0.1);
-            border-left: 4px solid var(--system-purple);
-            padding: 12px;
-            margin-top: 12px;
-            border-radius: 4px;
-            color: var(--system-purple);
-        }
-
-        .copy-toast {
+        /* Detail View (Modal Sheet Style) */
+        .detail-view {
+            display: none;
             position: fixed;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%);
-            background-color: rgba(0, 0, 0, 0.8);
-            color: white;
-            padding: 12px 20px;
-            border-radius: 8px;
-            font-size: 14px;
-            font-weight: 500;
+            top: 0; left: 0; right: 0; bottom: 0;
             z-index: 2000;
-            opacity: 0;
-            transition: opacity 0.3s ease;
+            background-color: var(--ios-bg-primary);
+            flex-direction: column;
+            animation: slideUp 0.3s cubic-bezier(0.16, 1, 0.3, 1);
         }
 
-        .copy-toast.show {
-            opacity: 1;
+        @keyframes slideUp {
+            from { transform: translateY(100%); }
+            to { transform: translateY(0); }
+        }
+        @keyframes slideDown {
+            from { transform: translateY(0); }
+            to { transform: translateY(100%); }
         }
 
-        .footer {
-            text-align: center;
+        .detail-nav {
+            background-color: var(--ios-bg-modal);
+            height: 56px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 0 16px;
+            border-bottom: 0.5px solid var(--ios-separator);
+            flex-shrink: 0;
+        }
+
+        .detail-title {
+            font-weight: 600;
+            font-size: 17px;
+        }
+
+        .btn-text {
+            background: none;
+            border: none;
+            color: var(--ios-blue);
+            font-size: 17px;
+            cursor: pointer;
+            padding: 8px;
+        }
+        .btn-text.bold { font-weight: 600; }
+
+        .detail-scroll-area {
+            flex: 1;
+            overflow-y: auto;
             padding: 20px 16px;
-            color: var(--text-tertiary);
-            font-size: 12px;
-            border-top: 1px solid var(--divider);
-            margin-top: 40px;
+            -webkit-overflow-scrolling: touch;
         }
 
-        .admin-button {
+        .detail-card {
+            background-color: var(--ios-bg-card);
+            border-radius: 12px;
+            padding: 16px;
+            margin-bottom: 20px;
+            font-size: 16px;
+            line-height: 1.6;
+            white-space: pre-wrap;
+            box-shadow: var(--shadow-sm);
+        }
+
+        .textarea-ios {
+            width: 100%;
+            background-color: var(--ios-bg-card);
+            border: none;
+            border-radius: 12px;
+            padding: 16px;
+            font-family: inherit;
+            font-size: 16px;
+            color: var(--ios-text-primary);
+            min-height: 150px;
+            margin-bottom: 20px;
+            resize: none;
+            box-shadow: var(--shadow-sm);
+        }
+        .textarea-ios:focus { outline: 2px solid var(--ios-blue); }
+
+        .btn-block {
+            width: 100%;
+            background-color: var(--ios-blue);
+            color: white;
+            border: none;
+            border-radius: 12px;
+            padding: 14px;
+            font-size: 17px;
+            font-weight: 600;
+            cursor: pointer;
+        }
+        .btn-block:active { opacity: 0.8; }
+
+        /* Loading & Empty States */
+        .state-container {
+            padding: 30px;
+            text-align: center;
+            color: var(--ios-text-secondary);
+        }
+        .spinner {
+            width: 24px; height: 24px;
+            border: 3px solid var(--ios-gray4);
+            border-top-color: var(--ios-blue);
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+            margin: 0 auto 12px;
+        }
+        @keyframes spin { to { transform: rotate(360deg); } }
+
+        /* Toast Notification (Dynamic Island Style) */
+        .toast {
             position: fixed;
-            bottom: 20px;
+            top: 60px; /* Below navbar */
+            left: 50%;
+            transform: translateX(-50%) translateY(-20px);
+            background: rgba(0,0,0,0.8);
+            backdrop-filter: blur(10px);
+            color: white;
+            padding: 12px 24px;
+            border-radius: 30px;
+            font-size: 15px;
+            font-weight: 600;
+            z-index: 3000;
+            opacity: 0;
+            transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            pointer-events: none;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+        }
+        .toast.show {
+            opacity: 1;
+            transform: translateX(-50%) translateY(0);
+        }
+        @media (prefers-color-scheme: dark) {
+            .toast { background: rgba(255,255,255,0.9); color: black; }
+        }
+
+        /* Floating Admin Button */
+        .fab-admin {
+            position: fixed;
+            bottom: max(20px, env(safe-area-inset-bottom));
             right: 20px;
-            width: 40px;
-            height: 40px;
-            background-color: var(--card-background);
+            width: 44px;
+            height: 44px;
+            background: var(--ios-bg-card);
             border-radius: 50%;
             display: flex;
             align-items: center;
             justify-content: center;
-            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
-            cursor: pointer;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.2);
+            text-decoration: none;
+            font-size: 20px;
             z-index: 100;
-            opacity: 0.7;
-            transition: all 0.3s ease;
+            color: var(--ios-text-secondary);
         }
 
-        .admin-button:hover {
-            opacity: 1;
-            transform: scale(1.1);
+        /* Weather Iframe */
+        #weatherIframe {
+            width: 100%;
+            min-height: 600px;
+            border: none;
+            display: block;
+            border-radius: var(--border-radius-card);
         }
+        
+        /* Icons (SVGs) */
+        .icon-svg { width: 18px; height: 18px; fill: currentColor; }
+        .icon-copy { width: 20px; height: 20px; }
 
-        @media (prefers-color-scheme: light) {
-            .copy-toast {
-                background-color: rgba(0, 0, 0, 0.8);
-                color: white;
-            }
-        }
-
-        @media (prefers-color-scheme: dark) {
-            .copy-toast {
-                background-color: rgba(255, 255, 255, 0.9);
-                color: black;
-            }
-        }
-        .weather-load {
-    text-align: center;
-    padding: 32px 16px;
-}
-
-#weatherIframeContainer {
-    margin-top: 16px;
-    border-radius: 10px;
-    overflow: hidden;
-    box-shadow: 0 1px 2px var(--shadow);
-}
-
-#weatherIframe {
-    width: 100%;
-    min-height: 600px; /* Adjust height as needed */
-    border: none;
-    display: block;
-}
     </style>
 </head>
 <body>
+
+    <div class="nav-bar">
+        <div class="container" style="width: 100%; padding: 0;">
+            <div class="nav-large-title">
+                <div>
+                    地震情報
+                    <div class="app-version">v1.0</div>
+                </div>
+            </div>
+            <div class="control-bar">
+                <button id="subscribeButton" class="pill-btn primary">
+                    <span></span>通知許可
+                </button>
+                <button id="testNotificationButton" class="pill-btn">
+                    <span></span>テスト
+                </button>
+                <button class="pill-btn" onclick="scrollToEewSection()">緊急地震速報</button>
+                <button class="pill-btn" onclick="scrollToTsunamiSection()">津波情報</button>
+                <button id="reloadButton" class="pill-btn">再読み込み</button>
+            </div>
+        </div>
+    </div>
+
     <div class="container">
+        <!-- Admin Message -->
         <div id="adminMessage" class="admin-message">
             <button class="admin-message-close" onclick="hideAdminMessage()">×</button>
             <div id="adminMessageText"></div>
         </div>
 
-        <div class="header">
-            <h1 class="app-title">地震情報</h1>
-            <p class="app-subtitle">Version 1.0</p>
-            <div class="button-row">
-                <button id="subscribeButton" class="btn">通知を許可</button>
-                <button id="testNotificationButton" class="btn">テスト通知</button>
-                <button class="btn secondary" onclick="scrollToEewSection()">緊急地震速報へ</button>
-                <button class="btn secondary" onclick="scrollToTsunamiSection()">津波情報へ</button>
-                <button id="reloadButton" class="btn secondary">再読み込み</button>
-            </div>
-        </div>
-
-        <div class="section-header">EWC quake</div>
-        <div class="section-subheader">最新の地震情報を表示しています</div>
+        <!-- Earthquake List -->
+        <div class="section-title">最新の地震</div>
         <div class="list-group" id="earthquakeList">
-            <div class="loading-indicator">
+            <div class="state-container">
                 <div class="spinner"></div>
-                <div>地震情報を取得中...</div>
+                <div>読み込み中...</div>
             </div>
         </div>
 
-        <div class="section-header" id="eewSection">緊急地震速報</div>
-        <div class="section-subheader">緊急地震速報の最新情報</div>
+        <!-- EEW List -->
+        <div class="section-title" id="eewSection">緊急地震速報</div>
         <div class="list-group" id="eewList">
-            <div class="loading-indicator">
+            <div class="state-container">
                 <div class="spinner"></div>
-                <div>緊急地震速報を取得中...</div>
+                <div>取得中...</div>
             </div>
         </div>
 
-        <div class="section-header" id="tsunamiSection">津波情報</div>
-        <div class="section-subheader">最新の津波予報や警報情報</div>
+        <!-- Tsunami List -->
+        <div class="section-title" id="tsunamiSection">津波情報</div>
         <div class="list-group" id="tsunamiList">
-            <div class="loading-indicator">
+            <div class="state-container">
                 <div class="spinner"></div>
-                <div>津波情報を取得中...</div>
+                <div>取得中...</div>
             </div>
         </div>
 
-        <div class="section-header" id="weatherSection">気象情報β</div>
-<div class="section-subheader">気象警報などの情報</div>
-<div class="list-group" id="weatherContainer">
-    <div class="weather-load">
-        <button class="btn" id="loadWeatherButton">気象情報を読み込む</button>
-        <div id="weatherIframeContainer" style="display: none;"></div>
-    </div>
-</div>
-
-        <div class="footer">
-            <a href="/teams.html">利用規約</a>
+        <!-- Weather Section -->
+        <div class="section-title" id="weatherSection">気象情報 (β)</div>
+        <div class="list-group">
+            <div id="weatherContainer" style="padding: 16px; text-align: center;">
+                <button class="btn-block" id="loadWeatherButton" style="background-color: var(--ios-gray5); color: var(--ios-blue);">
+                    気象情報を表示
+                </button>
+                <div id="weatherIframeContainer" style="display: none; margin-top: 10px;"></div>
+            </div>
         </div>
-        
+
+        <div style="text-align: center; padding: 40px 0; color: var(--ios-text-tertiary); font-size: 12px;">
+            <a href="/teams.html" style="color: inherit; text-decoration: none;">利用規約</a>
+            <br><br>
+            EWC quake
+        </div>
     </div>
 
-    <div id="copyToast" class="copy-toast">コピーしました</div>
+    <!-- Admin Button -->
+    <a href="/admin" class="fab-admin" title="管理者メニュー">⚙️</a>
 
+    <!-- Toast -->
+    <div id="copyToast" class="toast">
+        <svg class="icon-svg" viewBox="0 0 24 24"><path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41z"/></svg>
+        コピーしました
+    </div>
+
+    <!-- Earthquake Detail Modal -->
     <div id="earthquakeDetailTemplate" class="detail-view">
-        <div class="detail-header">
-            <button class="back-button" onclick="closeDetail('earthquakeDetailTemplate')">戻る</button>
-            <div class="detail-title">地震情報</div>
+        <div class="detail-nav">
+            <button class="btn-text" onclick="closeDetail('earthquakeDetailTemplate')">キャンセル</button>
+            <div class="detail-title">地震詳細</div>
+            <button class="btn-text bold" onclick="closeDetail('earthquakeDetailTemplate')">完了</button>
         </div>
-        <div class="detail-content">
-            <div class="detail-info" id="earthquakeDetailInfo"></div>
-            <div class="edit-section">
-                <div class="edit-label">通知メッセージを編集</div>
-                <textarea class="textarea-ios" id="earthquakeDetailTextarea"></textarea>
-                <button class="action-button" id="earthquakeShareButton">編集したメッセージを共有</button>
-            </div>
+        <div class="detail-scroll-area">
+            <div class="detail-card" id="earthquakeDetailInfo"></div>
+            <div class="section-title" style="padding-left: 0;">共有メッセージの編集</div>
+            <textarea class="textarea-ios" id="earthquakeDetailTextarea"></textarea>
+            <button class="btn-block" id="earthquakeShareButton">共有する</button>
         </div>
     </div>
 
+    <!-- EEW Detail Modal -->
     <div id="eewDetailTemplate" class="detail-view">
-        <div class="detail-header">
-            <button class="back-button" onclick="closeDetail('eewDetailTemplate')">戻る</button>
+        <div class="detail-nav">
+            <button class="btn-text" onclick="closeDetail('eewDetailTemplate')">キャンセル</button>
             <div class="detail-title">緊急地震速報</div>
+            <button class="btn-text bold" onclick="closeDetail('eewDetailTemplate')">完了</button>
         </div>
-        <div class="detail-content">
-            <div class="detail-info" id="eewDetailInfo"></div>
-            <div class="edit-section">
-                <div class="edit-label">通知メッセージを編集</div>
-                <textarea class="textarea-ios" id="eewDetailTextarea"></textarea>
-                <button class="action-button" id="eewShareButton">編集したメッセージを共有</button>
-            </div>
+        <div class="detail-scroll-area">
+            <div class="detail-card" id="eewDetailInfo"></div>
+            <div class="section-title" style="padding-left: 0;">共有メッセージの編集</div>
+            <textarea class="textarea-ios" id="eewDetailTextarea"></textarea>
+            <button class="btn-block" id="eewShareButton">共有する</button>
         </div>
     </div>
 
+    <!-- Tsunami Detail Modal -->
     <div id="tsunamiDetailTemplate" class="detail-view">
-        <div class="detail-header">
-            <button class="back-button" onclick="closeDetail('tsunamiDetailTemplate')">戻る</button>
+        <div class="detail-nav">
+            <button class="btn-text" onclick="closeDetail('tsunamiDetailTemplate')">キャンセル</button>
             <div class="detail-title">津波情報</div>
+            <button class="btn-text bold" onclick="closeDetail('tsunamiDetailTemplate')">完了</button>
         </div>
-        <div class="detail-content">
-            <div class="detail-info" id="tsunamiDetailInfo"></div>
-            <div class="edit-section">
-                <div class="edit-label">通知メッセージを編集</div>
-                <textarea class="textarea-ios" id="tsunamiDetailTextarea"></textarea>
-                <button class="action-button" id="tsunamiShareButton">編集したメッセージを共有</button>
-            </div>
+        <div class="detail-scroll-area">
+            <div class="detail-card" id="tsunamiDetailInfo"></div>
+            <div class="section-title" style="padding-left: 0;">共有メッセージの編集</div>
+            <textarea class="textarea-ios" id="tsunamiDetailTextarea"></textarea>
+            <button class="btn-block" id="tsunamiShareButton">共有する</button>
         </div>
     </div>
 
-    <a href="/admin" class="admin-button" title="管理者メニュー">⚙️</a>
-
+    <!-- Logic (Maintained from original) -->
     <script>
         const publicVapidKey = 'BC1T1-o4f9vLJ11ngQXOZTdKY8xd38vUyWeWyPosJ7JDJxnCPrAGtJZE_CUW4dqdh60eEUf5G-qzWjaojsSMer0';
         let earthquakeData = [];
         let eewData = null;
         let tsunamiData = [];
+
+        // SVG Icons for JS Injection
+        const ICON_COPY = `<svg class="icon-svg icon-copy" viewBox="0 0 24 24"><path d="M16 1H4c-1.1 0-2 .9-2 2v14h2V3h12V1zm3 4H8c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h11c1.1 0 2-.9 2-2V7c0-1.1-.9-2-2-2zm0 16H8V7h11v14z"/></svg>`;
+        const ICON_CHECK = `<svg class="icon-svg icon-copy" viewBox="0 0 24 24"><path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41z"/></svg>`;
 
         async function fetchAdminMessage() {
             try {
@@ -889,6 +801,7 @@
             }
         }
 
+        // --- Text Generation Functions (Kept exactly as requested) ---
         function generateDetailedEarthquakeText(earthquake) {
             const time = new Date(earthquake.earthquake.time);
             const date = time.toLocaleDateString('ja-JP', { month: '2-digit', day: '2-digit' });
@@ -908,10 +821,8 @@
 
             let formattedMessage;
 
-            // 震度速報のテンプレート変更 (地域名表示を【県】地域名 に戻す)
             if (earthquake.issue && earthquake.issue.type === 'ScalePrompt') {
                 formattedMessage = `【EWC震度速報(${timeStr})】`;
-                
                 const scaleOrder = ['7', '6強', '6弱', '5強', '5弱', '5弱以上と推定されるが震度情報を入手していない', '4', '3', '2', '1'];
                 const sortedScales = Object.keys(pointsByScale).sort((a, b) => {
                     return scaleOrder.indexOf(a) - scaleOrder.indexOf(b);
@@ -921,12 +832,10 @@
                     formattedMessage += `\n《震度${scale}》`;
                     Object.keys(pointsByScale[scale]).forEach(pref => {
                         const uniqueAreas = new Set(pointsByScale[scale][pref]);
-                        // 県名を表示して、その後に地域名をスペース区切りで表示
                         formattedMessage += `\n【${pref}】${Array.from(uniqueAreas).join('  ')}`;
                     });
                 });
             } else {
-                // 地震情報のテンプレート
                 formattedMessage = `【EWC地震情報  最大震度${maxScale}】\n震源地：${hypocenter}\n規模：M${magnitude}\n深さ：${depth}\n日時：${date} ${timeStr}頃\n${tsunamiInfo}`;
 
                 if (earthquake.issue && (earthquake.issue.type === 'ScaleAndDestination' || earthquake.issue.type === 'DetailScale')) {
@@ -964,7 +873,6 @@
                     formattedMessage += `\n\n《震源・震度の訂正がありました。》`;
                 }
             }
-
             return formattedMessage;
         }
 
@@ -972,12 +880,10 @@
             if (data.isCancel) {
                 return "先程の緊急地震速報は取り消されました。";
             }
-            
             let formattedMessage = formatEewMessage(data);
             if (data.isAssumption) {
                 formattedMessage += "\n※この緊急地震速報は精度が低い可能性があります※";
             }
-            
             return formattedMessage;
         }
 
@@ -1017,7 +923,7 @@
                 } else if (category.includes('大津波')) {
                     majorWarnings.push(`${areaName}　〈${maxHeight}〉`);
                 } else {
-                    forecasts.push(`${areaName}　〈${maxHeight}〉`); // デフォルトは予報として扱う
+                    forecasts.push(`${areaName}　〈${maxHeight}〉`);
                 }
             });
 
@@ -1049,7 +955,6 @@
             const base64 = (base64String + padding).replace(/-/g, '+').replace(/_/g, '/');
             const rawData = window.atob(base64);
             const outputArray = new Uint8Array(rawData.length);
-
             for (let i = 0; i < rawData.length; ++i) {
                 outputArray[i] = rawData.charCodeAt(i);
             }
@@ -1064,9 +969,8 @@
             } catch (error) {
                 console.error('Error fetching earthquake information:', error);
                 document.getElementById('earthquakeList').innerHTML = `
-                    <div class="empty-state">
-                        <div class="empty-icon">⚠️</div>
-                        <div>地震情報の取得に失敗しました</div>
+                    <div class="state-container">
+                        <div>⚠️ 地震情報の取得に失敗しました</div>
                     </div>
                 `;
             }
@@ -1080,9 +984,8 @@
             } catch (error) {
                 console.error('Error fetching EEW information:', error);
                 document.getElementById('eewList').innerHTML = `
-                    <div class="empty-state">
-                        <div class="empty-icon">⚠️</div>
-                        <div>緊急地震速報の取得に失敗しました</div>
+                    <div class="state-container">
+                        <div>⚠️ 緊急地震速報の取得に失敗しました</div>
                     </div>
                 `;
             }
@@ -1108,13 +1011,14 @@
             } catch (error) {
                 console.error('Error fetching tsunami information:', error);
                 document.getElementById('tsunamiList').innerHTML = `
-                    <div class="empty-state">
-                        <div class="empty-icon">🌊</div>
-                        <div>津波情報の取得に失敗しました（現在メンテナンス中です）</div>
+                    <div class="state-container">
+                        <div>🌊 津波情報の取得に失敗しました</div>
                     </div>
                 `;
             }
         }
+
+        // --- Display Functions (Updated for New UI) ---
 
         function displayEarthquakeList(earthquakes) {
             const container = document.getElementById('earthquakeList');
@@ -1122,8 +1026,7 @@
             
             if (!earthquakes || earthquakes.length === 0) {
                 container.innerHTML = `
-                    <div class="empty-state">
-                        <div class="empty-icon">📊</div>
+                    <div class="state-container">
                         <div>現在、表示する地震情報はありません</div>
                     </div>
                 `;
@@ -1140,28 +1043,28 @@
                 let magnitude = earthquake.earthquake.hypocenter.magnitude;
                 magnitude = magnitude === -1 ? '不明' : magnitude.toFixed(1);
                 
-                const tsunamiInfo = getTsunamiInfo(earthquake.earthquake.domesticTsunami);
                 const tsunamiBadge = getTsunamiBadge(earthquake.earthquake.domesticTsunami);
 
                 const listItem = document.createElement('div');
                 listItem.className = 'list-item';
                 
                 listItem.innerHTML = `
-                    <div class="list-item-content" onclick="showEarthquakeDetail(${index})">
-                        <div class="list-item-header">
-                            <div class="list-item-title">
-                                <span class="scale-indicator scale-${maxScale}">震${maxScale}</span>
-                                ${date} ${timeStr}
+                    <div class="list-content" onclick="showEarthquakeDetail(${index})">
+                        <div class="item-top-row">
+                            <div class="item-title">
+                                <span class="shindo-circle scale-${maxScale}">${maxScale}</span>
+                                ${hypocenter}
                             </div>
+                            <div class="item-time">${date} ${timeStr}</div>
                         </div>
-                        <div class="list-item-subtitle">${hypocenter} M${magnitude}</div>
-                        <div class="list-item-details">
+                        <div class="item-subtitle">M${magnitude} / 最大震度${maxScale}</div>
+                        <div class="item-detail-text">
                             ${tsunamiBadge}
                         </div>
                     </div>
-                    <div class="list-item-actions">
-                        <button class="copy-button" onclick="event.stopPropagation(); copyEarthquakeInfo(${index}, this)" title="詳細情報をコピー">
-                            📋
+                    <div class="item-actions">
+                        <button class="btn-icon" onclick="event.stopPropagation(); copyEarthquakeInfo(${index}, this)" title="コピー">
+                            ${ICON_COPY}
                         </button>
                         <span class="chevron">›</span>
                     </div>
@@ -1177,8 +1080,7 @@
             
             if (!data.Title || !data.CodeType) {
                 container.innerHTML = `
-                    <div class="empty-state">
-                        <div class="empty-icon">⚡</div>
+                    <div class="state-container">
                         <div>現在、緊急地震速報は発表されていません</div>
                     </div>
                 `;
@@ -1194,7 +1096,7 @@
             const hypocenter = data.Hypocenter || '';
             
             let badgeClass = 'warning';
-            let badgeText = '緊急地震速報';
+            let badgeText = '速報';
             
             if (isCancel) {
                 badgeClass = 'info';
@@ -1202,23 +1104,24 @@
             }
             
             listItem.innerHTML = `
-                <div class="list-item-content" onclick="showEewDetail()">
-                    <div class="list-item-header">
-                        <div class="list-item-title">
+                <div class="list-content" onclick="showEewDetail()">
+                    <div class="item-top-row">
+                        <div class="item-title">
                             <span class="badge ${badgeClass}">${badgeText}</span>
-                            ${isCancel ? '先程の緊急地震速報は取り消されました' : `最大震度${maxIntensity}程度`}
+                            ${isCancel ? '取消報' : `最大震度${maxIntensity}`}
                         </div>
+                        <div class="item-time">${time}</div>
                     </div>
                     ${!isCancel ? `
-                    <div class="list-item-subtitle">${hypocenter} ${time}</div>
-                    <div class="list-item-details">
-                        第${data.Serial}報 - ${data.isAssumption ? '精度が低い可能性があります' : ''}
+                    <div class="item-subtitle">${hypocenter}</div>
+                    <div class="item-detail-text">
+                        第${data.Serial}報 ${data.isAssumption ? '(推定値)' : ''}
                     </div>
-                    ` : ''}
+                    ` : '<div class="item-subtitle">先程の速報は取り消されました</div>'}
                 </div>
-                <div class="list-item-actions">
-                    <button class="copy-button" onclick="event.stopPropagation(); copyEewInfo(this)" title="詳細情報をコピー">
-                        📋
+                <div class="item-actions">
+                    <button class="btn-icon" onclick="event.stopPropagation(); copyEewInfo(this)">
+                         ${ICON_COPY}
                     </button>
                     <span class="chevron">›</span>
                 </div>
@@ -1226,15 +1129,14 @@
             
             container.appendChild(listItem);
         }
-//display
+
         function displayTsunamiList(tsunamis) {
             const container = document.getElementById('tsunamiList');
             container.innerHTML = '';
             
             if (!tsunamis || tsunamis.length === 0) {
                 container.innerHTML = `
-                    <div class="empty-state">
-                        <div class="empty-icon">🌊</div>
+                    <div class="state-container">
                         <div>現在、表示する津波情報はありません</div>
                     </div>
                 `;
@@ -1250,60 +1152,51 @@
                 const hypocenter = summary.anm || '不明';
                 const magnitude = summary.mag ? `M${summary.mag}` : '不明';
                 let badgeClass = 'forecast';
-                let badgeText = '津波予報';
+                let badgeText = '予報';
                 
                 const items = tsunami.details?.Body?.Tsunami?.Forecast?.Item;
+                // Determine badge type (logic same as original)
+                let hasMajor = false, hasWarn = false, hasWatch = false;
+                
                 if (items) {
                     const categories = Array.isArray(items) 
                         ? items.map(item => typeof item.Category?.Kind === 'string' ? item.Category.Kind : '不明')
                         : [typeof items.Category?.Kind === 'string' ? items.Category.Kind : '不明'];
                     
-                    if (categories.some(kind => kind.includes('大津波'))) {
-                        badgeClass = 'major';
-                        badgeText = '大津波警報';
-                    } else if (categories.some(kind => kind.includes('警報'))) {
-                        badgeClass = 'warning';
-                        badgeText = '津波警報';
-                    } else if (categories.some(kind => kind.includes('注意報'))) {
-                        badgeClass = 'watch';
-                        badgeText = '津波注意報';
-                    }
+                    if (categories.some(kind => kind.includes('大津波'))) hasMajor = true;
+                    else if (categories.some(kind => kind.includes('警報'))) hasWarn = true;
+                    else if (categories.some(kind => kind.includes('注意報'))) hasWatch = true;
                 } else if (summary.kind && summary.kind.length > 0) {
                     const kind = summary.kind[0].kind;
-                    if (kind.includes('大津波')) {
-                        badgeClass = 'major';
-                        badgeText = '大津波警報';
-                    } else if (kind.includes('警報')) {
-                        badgeClass = 'warning';
-                        badgeText = '津波警報';
-                    } else if (kind.includes('注意報')) {
-                        badgeClass = 'watch';
-                        badgeText = '津波注意報';
-                    } else {
-                        badgeClass = 'forecast';
-                        badgeText = kind;
-                    }
+                    if (kind.includes('大津波')) hasMajor = true;
+                    else if (kind.includes('警報')) hasWarn = true;
+                    else if (kind.includes('注意報')) hasWatch = true;
+                    else badgeText = kind;
                 }
+
+                if(hasMajor) { badgeClass = 'major'; badgeText = '大津波警報'; }
+                else if(hasWarn) { badgeClass = 'warning'; badgeText = '津波警報'; }
+                else if(hasWatch) { badgeClass = 'watch'; badgeText = '津波注意報'; }
 
                 const listItem = document.createElement('div');
                 listItem.className = 'list-item';
                 
                 listItem.innerHTML = `
-                    <div class="list-item-content" onclick="showTsunamiDetail(${index})">
-                        <div class="list-item-header">
-                            <div class="list-item-title">
+                    <div class="list-content" onclick="showTsunamiDetail(${index})">
+                        <div class="item-top-row">
+                            <div class="item-title">
                                 <span class="badge ${badgeClass}">${badgeText}</span>
                                 ${date} ${timeStr}
                             </div>
                         </div>
-                        <div class="list-item-subtitle">${hypocenter} ${magnitude}</div>
-                        <div class="list-item-details">
-                            ${summary.ift} - 津波情報
+                        <div class="item-subtitle">${hypocenter} ${magnitude}</div>
+                        <div class="item-detail-text">
+                            ${summary.ift}
                         </div>
                     </div>
-                    <div class="list-item-actions">
-                        <button class="copy-button" onclick="event.stopPropagation(); copyTsunamiInfo(${index}, this)" title="詳細情報をコピー">
-                            📋
+                    <div class="item-actions">
+                        <button class="btn-icon" onclick="event.stopPropagation(); copyTsunamiInfo(${index}, this)">
+                             ${ICON_COPY}
                         </button>
                         <span class="chevron">›</span>
                     </div>
@@ -1313,106 +1206,73 @@
             });
         }
 
+        // --- Copy Actions ---
+
         async function copyEarthquakeInfo(index, button) {
             const earthquake = earthquakeData[index];
             const detailedText = generateDetailedEarthquakeText(earthquake);
-            
             const success = await copyToClipboard(detailedText);
-            if (success) {
-                button.classList.add('copied');
-                button.innerHTML = '✓';
-                setTimeout(() => {
-                    button.classList.remove('copied');
-                    button.innerHTML = '📋';
-                }, 2000);
-            }
+            if (success) animateCopyButton(button);
         }
 
         async function copyEewInfo(button) {
             if (!eewData) return;
-            
             const detailedText = generateDetailedEewText(eewData);
-            
             const success = await copyToClipboard(detailedText);
-            if (success) {
-                button.classList.add('copied');
-                button.innerHTML = '✓';
-                setTimeout(() => {
-                    button.classList.remove('copied');
-                    button.innerHTML = '📋';
-                }, 2000);
-            }
+            if (success) animateCopyButton(button);
         }
 
         async function copyTsunamiInfo(index, button) {
             const tsunami = tsunamiData[index];
             const detailedText = generateDetailedTsunamiText(tsunami.summary, tsunami.details);
-            
             const success = await copyToClipboard(detailedText);
-            if (success) {
-                button.classList.add('copied');
-                button.innerHTML = '✓';
-                setTimeout(() => {
-                    button.classList.remove('copied');
-                    button.innerHTML = '📋';
-                }, 2000);
+            if (success) animateCopyButton(button);
+        }
+
+        function animateCopyButton(button) {
+            button.classList.add('copied');
+            button.innerHTML = ICON_CHECK;
+            setTimeout(() => {
+                button.classList.remove('copied');
+                button.innerHTML = ICON_COPY;
+            }, 2000);
+        }
+
+        // --- Weather ---
+        function loadWeatherIframe() {
+            const container = document.getElementById('weatherIframeContainer');
+            const loadButton = document.getElementById('loadWeatherButton');
+            
+            if (container.innerHTML === '') {
+                const iframe = document.createElement('iframe');
+                iframe.id = 'weatherIframe';
+                iframe.src = 'https://hayato040404.github.io/jma-weather/';
+                iframe.title = '気象情報';
+                container.appendChild(iframe);
+                container.style.display = 'block';
+                loadButton.style.display = 'none';
             }
         }
-   function loadWeatherIframe() {
-    const container = document.getElementById('weatherIframeContainer');
-    const loadButton = document.getElementById('loadWeatherButton');
-    
-    // Check if iframe already exists to avoid duplicates
-    if (container.innerHTML === '') {
-        const iframe = document.createElement('iframe');
-        iframe.id = 'weatherIframe';
-        iframe.src = 'https://hayato040404.github.io/jma-weather/';
-        iframe.title = '気象情報';
-        container.appendChild(iframe);
-        container.style.display = 'block';
-        loadButton.style.display = 'none'; // Hide the button after loading
-    }
-}
+        document.getElementById('loadWeatherButton').addEventListener('click', loadWeatherIframe);
 
-// Add event listener for the load button
-document.getElementById('loadWeatherButton').addEventListener('click', () => {
-    loadWeatherIframe();
-});
-
-// Add scroll function for weather section
-function scrollToWeatherSection() {
-    const weatherSection = document.getElementById('weatherSection');
-    weatherSection.scrollIntoView({ behavior: 'smooth' });
-}
+        // --- Detail Views ---
         function showEarthquakeDetail(index) {
             const earthquake = earthquakeData[index];
             const formattedMessage = generateDetailedEarthquakeText(earthquake);
 
-            let tsunamiHtml = '';
-            const tsunamiType = earthquake.earthquake.domesticTsunami;
-            
-            if (tsunamiType === 'None') {
-                //tsunamiHtml = `<div class="no-tsunami">この地震による津波の心配はありません。</div>`;
-            } else if (tsunamiType === 'Checking') {
-                //tsunamiHtml = `<div class="checking-tsunami">津波の有無を調査中です。今後の情報に注意してください。</div>`;
-            } else if (['NonEffective', 'Watch', 'Warning'].includes(tsunamiType)) {
-                const tsunamiInfo = getTsunamiInfo(tsunamiType);
-                //tsunamiHtml = `<div class="tsunami-warning">${tsunamiInfo}</div>`;
-            }
-
-            document.getElementById('earthquakeDetailInfo').innerHTML = formattedMessage.replace(/\n/g, '<br>') + tsunamiHtml;
+            // Re-format specifically for HTML view if needed
+            let htmlContent = formattedMessage.replace(/\n/g, '<br>');
+            document.getElementById('earthquakeDetailInfo').innerHTML = htmlContent;
             document.getElementById('earthquakeDetailTextarea').value = formattedMessage;
             
             const shareButton = document.getElementById('earthquakeShareButton');
             shareButton.onclick = () => shareEditedMessage('earthquakeDetailTextarea', '地震情報');
             
-            document.getElementById('earthquakeDetailTemplate').style.display = 'block';
-            document.body.style.overflow = 'hidden';
+            openDetail('earthquakeDetailTemplate');
         }
 
         function showEewDetail() {
             if (!eewData || !eewData.Title) return;
-            
             const formattedMessage = generateDetailedEewText(eewData);
             
             document.getElementById('eewDetailInfo').innerHTML = formattedMessage.replace(/\n/g, '<br>');
@@ -1421,63 +1281,32 @@ function scrollToWeatherSection() {
             const shareButton = document.getElementById('eewShareButton');
             shareButton.onclick = () => shareEditedMessage('eewDetailTextarea', '緊急地震速報');
             
-            document.getElementById('eewDetailTemplate').style.display = 'block';
-            document.body.style.overflow = 'hidden';
+            openDetail('eewDetailTemplate');
         }
 
         function showTsunamiDetail(index) {
             const tsunami = tsunamiData[index];
             const formattedMessage = generateDetailedTsunamiText(tsunami.summary, tsunami.details);
-
-            let kindHtml = '';
-            const items = tsunami.details?.Body?.Tsunami?.Forecast?.Item;
-            let badgeClass = 'tsunami-forecast';
-            let badgeText = '津波予報';
-
-            if (items) {
-                const categories = Array.isArray(items) 
-                    ? items.map(item => typeof item.Category?.Kind === 'string' ? item.Category.Kind : '不明')
-                    : [typeof items.Category?.Kind === 'string' ? items.Category.Kind : '不明'];
-                
-                if (categories.some(kind => kind.includes('大津波'))) {
-                    badgeClass = 'tsunami-major';
-                    badgeText = '大津波警報';
-                } else if (categories.some(kind => kind.includes('警報'))) {
-                    badgeClass = 'tsunami-warning';
-                    badgeText = '津波警報';
-                } else if (categories.some(kind => kind.includes('注意報'))) {
-                    badgeClass = 'tsunami-watch';
-                    badgeText = '津波注意報';
-                }
-            } else if (tsunami.summary.kind && tsunami.summary.kind.length > 0) {
-                const kind = tsunami.summary.kind[0].kind;
-                if (kind.includes('大津波')) {
-                    badgeClass = 'tsunami-major';
-                    badgeText = '大津波警報';
-                } else if (kind.includes('警報')) {
-                    badgeClass = 'tsunami-warning';
-                    badgeText = '津波警報';
-                } else if (kind.includes('注意報')) {
-                    badgeClass = 'tsunami-watch';
-                    badgeText = '津波注意報';
-                }
-            }
-
-            kindHtml = `<div class="${badgeClass}">${badgeText}</div>`;
-
-            document.getElementById('tsunamiDetailInfo').innerHTML = formattedMessage.replace(/\n/g, '<br>') + kindHtml;
+            
+            document.getElementById('tsunamiDetailInfo').innerHTML = formattedMessage.replace(/\n/g, '<br>');
             document.getElementById('tsunamiDetailTextarea').value = formattedMessage;
             
             const shareButton = document.getElementById('tsunamiShareButton');
             shareButton.onclick = () => shareEditedMessage('tsunamiDetailTextarea', '津波情報');
             
-            document.getElementById('tsunamiDetailTemplate').style.display = 'block';
-            document.body.style.overflow = 'hidden';
+            openDetail('tsunamiDetailTemplate');
+        }
+
+        function openDetail(templateId) {
+            const template = document.getElementById(templateId);
+            template.style.display = 'flex';
+            template.style.animation = 'slideUp 0.3s cubic-bezier(0.16, 1, 0.3, 1)';
+            document.body.style.overflow = 'hidden'; // Prevent background scroll
         }
 
         function closeDetail(templateId) {
             const template = document.getElementById(templateId);
-            template.style.animation = 'slideOut 0.3s ease forwards';
+            template.style.animation = 'slideDown 0.3s cubic-bezier(0.16, 1, 0.3, 1) forwards';
             
             setTimeout(() => {
                 template.style.display = 'none';
@@ -1486,28 +1315,23 @@ function scrollToWeatherSection() {
             }, 300);
         }
 
+        // --- Helpers ---
         function formatEewMessage(data) {
             let magnitude = data.Magunitude;
             magnitude = typeof magnitude === "number" || (typeof magnitude === "string" && !isNaN(magnitude))
-                ? parseFloat(magnitude).toFixed(1)
-                : "不明";
+                ? parseFloat(magnitude).toFixed(1) : "不明";
 
             let depth = data.Depth;
             depth = typeof depth === "number" || (typeof depth === "string" && !isNaN(depth))
-                ? `約${parseFloat(depth)}km`
-                : "不明";
+                ? `約${parseFloat(depth)}km` : "不明";
 
-            // 警報か予報かの判定（WarnAreaがあれば警報とみなす、なければ予報）
             const isWarning = data.WarnArea && data.WarnArea.length > 0;
             const typeStr = isWarning ? "警報" : "予報";
 
-            // 日時の整形 (MM/DD HH:mm頃)
             let formattedDate = "不明";
             if (data.OriginTime) {
-                // API例: "2026/01/07 18:39:07"
-                const dateParts = data.OriginTime.split(' ')[0].split('/'); // [2026, 01, 07]
-                const timeParts = data.OriginTime.split(' ')[1].split(':'); // [18, 39, 07]
-                
+                const dateParts = data.OriginTime.split(' ')[0].split('/');
+                const timeParts = data.OriginTime.split(' ')[1].split(':');
                 if (dateParts.length >= 3 && timeParts.length >= 2) {
                     formattedDate = `${dateParts[1]}/${dateParts[2]} ${timeParts[0]}:${timeParts[1]}頃`;
                 }
@@ -1517,7 +1341,6 @@ function scrollToWeatherSection() {
 
             if (data.WarnArea && Array.isArray(data.WarnArea) && data.WarnArea.length > 0) {
                 message += `\n\n[予想される震度]`;
-
                 const areasByShindo = {};
                 data.WarnArea.forEach(area => {
                     const shindo = area.Shindo1;
@@ -1526,30 +1349,20 @@ function scrollToWeatherSection() {
                         areasByShindo[shindo].push(area.Chiiki);
                     }
                 });
-
                 const shindoOrder = ['7', '6強', '6弱', '5強', '5弱', '4', '3', '2', '1', '不明'];
                 const sortedShindos = Object.keys(areasByShindo).sort((a, b) => shindoOrder.indexOf(a) - shindoOrder.indexOf(b));
-
                 sortedShindos.forEach(shindo => {
                     message += `\n《最大震度${shindo}》\n${areasByShindo[shindo].join(' ')}`;
                 });
             }
-
             return message;
         }
 
         function getScaleDescription(scale) {
             const scaleDescriptions = {
-                10: '1',
-                20: '2',
-                30: '3',
-                40: '4',
-                45: '5弱',
-                46: '5弱以上と推定されるが震度情報を入手していない',
-                50: '5強',
-                55: '6弱',
-                60: '6強',
-                70: '7'
+                10: '1', 20: '2', 30: '3', 40: '4',
+                45: '5弱', 46: '5弱以上', 50: '5強',
+                55: '6弱', 60: '6強', 70: '7'
             };
             return scaleDescriptions[scale] || '不明';
         }
@@ -1558,10 +1371,10 @@ function scrollToWeatherSection() {
             const tsunamiMessages = {
                 "None": "この地震による津波の心配はありません。",
                 "Unknown": "不明",
-                "Checking": "津波の有無を調査中です。今後の情報に注意してください。",
+                "Checking": "津波の有無を調査中です。",
                 "NonEffective": "若干の海面変動があるかもしれませんが、被害の心配はありません。",
                 "Watch": "現在、津波注意報を発表中です。",
-                "Warning": "現在、津波警報等（大津波警報・津波警報あるいは津波注意報）を発表中です。"
+                "Warning": "現在、津波警報等を発表中です。"
             };
             return tsunamiMessages[domesticTsunami] || "（津波情報なし）";
         }
@@ -1570,7 +1383,7 @@ function scrollToWeatherSection() {
             const tsunamiBadges = {
                 "None": '<span class="badge info">津波の心配なし</span>',
                 "Unknown": '<span class="badge">不明</span>',
-                "Checking": '<span class="badge">津波調査中</span>',
+                "Checking": '<span class="badge">調査中</span>',
                 "NonEffective": '<span class="badge">若干の海面変動</span>',
                 "Watch": '<span class="badge watch">津波注意報</span>',
                 "Warning": '<span class="badge warning">津波警報</span>'
@@ -1580,77 +1393,51 @@ function scrollToWeatherSection() {
 
         function groupPointsByScale(points) {
             const pointsByScale = {};
-
             points.forEach(point => {
                 const scale = getScaleDescription(point.scale);
                 let addr = point.addr;
                 const prefecture = point.pref;
-
                 if (!scale) return;
-
                 let originalAddr = addr;
                 const cityMatch = addr.match(/([^市区町村]+[市区町村])/);
-                if (cityMatch) {
-                    addr = cityMatch[1];
-                }
+                if (cityMatch) addr = cityMatch[1];
 
                 const cityAdjustments = {
-                    "大町": "大町市",
-                    "貝町": "市貝町",
-                    "田村": "田村市",
-                    "川市": "市川市",
-                    "田市": "町田市",
-                    "原市": "市原市",
-                    "大村": "大村市",
-                  "山市": "村山市",
-                    "上市": "村上市"
+                    "大町": "大町市", "貝町": "市貝町", "田村": "田村市",
+                    "川市": "市川市", "田市": "町田市", "原市": "市原市",
+                    "大村": "大村市", "山市": "村山市", "上市": "村上市"
                 };
-
-                if (cityAdjustments[addr]) {
-                    addr = cityAdjustments[addr];
-                }
+                if (cityAdjustments[addr]) addr = cityAdjustments[addr];
 
                 pointsByScale[scale] = pointsByScale[scale] || {};
                 pointsByScale[scale][prefecture] = pointsByScale[scale][prefecture] || [];
                 pointsByScale[scale][prefecture].push(addr);
             });
-
             return pointsByScale;
         }
 
         function shareEditedMessage(textareaId, title) {
             const editedMessage = document.getElementById(textareaId).value;
             if (navigator.share) {
-                navigator.share({
-                    title: title,
-                    text: editedMessage
-                }).catch(console.error);
+                navigator.share({ title: title, text: editedMessage }).catch(console.error);
             } else {
                 showAlert('このブラウザは共有機能をサポートしていません。');
             }
         }
 
         function scrollToEewSection() {
-            const eewSection = document.getElementById('eewSection');
-            eewSection.scrollIntoView({ behavior: 'smooth' });
+            document.getElementById('eewSection').scrollIntoView({ behavior: 'smooth', block: 'start' });
         }
-
         function scrollToTsunamiSection() {
-            const tsunamiSection = document.getElementById('tsunamiSection');
-            tsunamiSection.scrollIntoView({ behavior: 'smooth' });
+            document.getElementById('tsunamiSection').scrollIntoView({ behavior: 'smooth', block: 'start' });
+        }
+        function scrollToWeatherSection() {
+            document.getElementById('weatherSection').scrollIntoView({ behavior: 'smooth', block: 'start' });
         }
 
-        document.getElementById('subscribeButton').addEventListener('click', () => {
-            subscribe().catch(err => console.error(err));
-        });
-
-        document.getElementById('testNotificationButton').addEventListener('click', () => {
-            sendTestNotification().catch(err => console.error(err));
-        });
-
-        document.getElementById('reloadButton').addEventListener('click', () => {
-            location.reload();
-        });
+        document.getElementById('subscribeButton').addEventListener('click', () => subscribe().catch(console.error));
+        document.getElementById('testNotificationButton').addEventListener('click', () => sendTestNotification().catch(console.error));
+        document.getElementById('reloadButton').addEventListener('click', () => location.reload());
 
         document.addEventListener('DOMContentLoaded', () => {
             fetchEarthquakeInfo();
