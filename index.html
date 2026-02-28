@@ -1317,55 +1317,56 @@
 
         // --- Helpers ---
         function formatEewMessage(data) {
-            let magnitude = data.Magunitude;
-            magnitude = typeof magnitude === "number" || (typeof magnitude === "string" && !isNaN(magnitude))
-                ? parseFloat(magnitude).toFixed(1) : "不明";
+    let magnitude = data.Magunitude;
+    magnitude = typeof magnitude === "number" || (typeof magnitude === "string" && !isNaN(magnitude))
+        ? parseFloat(magnitude).toFixed(1) : "不明";
 
-            let depth = data.Depth;
-            depth = typeof depth === "number" || (typeof depth === "string" && !isNaN(depth))
-                ? `約${parseFloat(depth)}km` : "不明";
+    let depth = data.Depth;
+    depth = typeof depth === "number" || (typeof depth === "string" && !isNaN(depth))
+        ? `約${parseFloat(depth)}km` : "不明";
 
-            const isWarning = data.WarnArea && data.WarnArea.length > 0;
-            const typeStr = isWarning ? "警報" : "予報";
+    // isWarn フィールドを使用して正しく判定
+    const isWarning = data.isWarn === true;
+    const typeStr = isWarning ? "警報" : "予報";
 
-            let formattedDate = "不明";
-            if (data.OriginTime) {
-                const dateParts = data.OriginTime.split(' ')[0].split('/');
-                const timeParts = data.OriginTime.split(' ')[1].split(':');
-                if (dateParts.length >= 3 && timeParts.length >= 2) {
-                    formattedDate = `${dateParts[1]}/${dateParts[2]} ${timeParts[0]}:${timeParts[1]}頃`;
-                }
-            }
-
-            let message = `【EWC緊急地震速報(${typeStr})】\n震源地：${data.Hypocenter}\n推定最大震度：${data.MaxIntensity}\n規模：M${magnitude}\n深さ：${depth}\n日時：${formattedDate}`;
-
-            if (data.WarnArea && Array.isArray(data.WarnArea) && data.WarnArea.length > 0) {
-                message += `\n\n[予想される震度]`;
-                const areasByShindo = {};
-                data.WarnArea.forEach(area => {
-                    const shindo = area.Shindo1;
-                    if (shindo) {
-                        areasByShindo[shindo] = areasByShindo[shindo] || [];
-                        areasByShindo[shindo].push(area.Chiiki);
-                    }
-                });
-                const shindoOrder = ['7', '6強', '6弱', '5強', '5弱', '4', '3', '2', '1', '不明'];
-                const sortedShindos = Object.keys(areasByShindo).sort((a, b) => shindoOrder.indexOf(a) - shindoOrder.indexOf(b));
-                sortedShindos.forEach(shindo => {
-                    message += `\n《最大震度${shindo}》\n${areasByShindo[shindo].join(' ')}`;
-                });
-            }
-            return message;
+    let formattedDate = "不明";
+    if (data.OriginTime) {
+        const dateParts = data.OriginTime.split(' ')[0].split('/');
+        const timeParts = data.OriginTime.split(' ')[1].split(':');
+        if (dateParts.length >= 3 && timeParts.length >= 2) {
+            formattedDate = `${dateParts[1]}/${dateParts[2]} ${timeParts[0]}:${timeParts[1]}頃`;
         }
+    }
 
-        function getScaleDescription(scale) {
-            const scaleDescriptions = {
-                10: '1', 20: '2', 30: '3', 40: '4',
-                45: '5弱', 46: '5弱以上', 50: '5強',
-                55: '6弱', 60: '6強', 70: '7'
-            };
-            return scaleDescriptions[scale] || '不明';
-        }
+    let message = `【EWC緊急地震速報(${typeStr})】\n震源地：${data.Hypocenter}\n推定最大震度：${data.MaxIntensity}\n規模：M${magnitude}\n深さ：${depth}\n日時：${formattedDate}`;
+
+    if (data.WarnArea && Array.isArray(data.WarnArea) && data.WarnArea.length > 0) {
+        message += `\n\n[予想される震度]`;
+        const areasByShindo = {};
+        data.WarnArea.forEach(area => {
+            const shindo = area.Shindo1;
+            if (shindo) {
+                areasByShindo[shindo] = areasByShindo[shindo] || [];
+                areasByShindo[shindo].push(area.Chiiki);
+            }
+        });
+        const shindoOrder = ['7', '6強', '6弱', '5強', '5弱', '4', '3', '2', '1', '不明'];
+        const sortedShindos = Object.keys(areasByShindo).sort((a, b) => shindoOrder.indexOf(a) - shindoOrder.indexOf(b));
+        sortedShindos.forEach(shindo => {
+            message += `\n《最大震度${shindo}》\n${areasByShindo[shindo].join(' ')}`;
+        });
+    }
+    return message;
+}
+
+function getScaleDescription(scale) {
+    const scaleDescriptions = {
+        10: '1', 20: '2', 30: '3', 40: '4',
+        45: '5弱', 46: '5弱以上', 50: '5強',
+        55: '6弱', 60: '6強', 70: '7'
+    };
+    return scaleDescriptions[scale] || '不明';
+}
 
         function getTsunamiInfo(domesticTsunami) {
             const tsunamiMessages = {
