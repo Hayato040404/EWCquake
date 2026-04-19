@@ -1552,7 +1552,7 @@
     }
 
     function formatEewMessage(data) {
-      let magnitude = data.Magnitude;
+      let magnitude = data.Magunitude;
       magnitude = typeof magnitude === "number" || (typeof magnitude === "string" && !isNaN(magnitude))
         ? parseFloat(magnitude).toFixed(1) : "不明";
 
