@@ -2,7 +2,7 @@
 <html lang="ja">
 <head>
   <!-- Google Tag Manager -->
-  <script async src="https://www.googletagmanager.com/gtag/js?id=G-8Y6WQS969X"></script>
+  <script defer src="https://www.googletagmanager.com/gtag/js?id=G-8Y6WQS969X"></script>
   <script>
     window.dataLayer = window.dataLayer || [];
     function gtag(){dataLayer.push(arguments);}
@@ -131,6 +131,7 @@
       justify-content: space-between;
       align-items: flex-end;
       transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+      will-change: transform, opacity;
     }
 
     .nav-bar.scrolled .nav-large-title {
@@ -460,8 +461,9 @@
       font-size: 17px;
       font-weight: 600;
       cursor: pointer;
+      position: relative;
+      overflow: hidden;
     }
-    .btn-block { width: 100%; background-color: var(--ios-blue); color: white; border: none; border-radius: 12px; padding: 14px; font-size: 17px; font-weight: 600; cursor: pointer; position: relative; overflow: hidden; }
     .btn-block::after { content: ''; position: absolute; top: 0; left: 0; right: 0; bottom: 0; background: linear-gradient(135deg, rgba(255,255,255,0.15) 0%, transparent 50%); pointer-events: none; }
     .btn-block:active { transform: scale(0.98); }
 
@@ -571,6 +573,13 @@
       margin: 0;
     }
 
+    @keyframes fadeInUp {
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
     .list-item {
       display: flex;
       align-items: center;
@@ -581,25 +590,20 @@
       opacity: 0;
       transform: translateY(10px);
       animation: fadeInUp 0.4s ease forwards;
+      will-change: transform, opacity;
+      animation-delay: var(--animation-delay, 0s);
     }
 
-    @keyframes fadeInUp {
-      to {
-        opacity: 1;
-        transform: translateY(0);
-      }
-    }
-
-    .list-item:nth-child(1) { animation-delay: 0.05s; }
-    .list-item:nth-child(2) { animation-delay: 0.1s; }
-    .list-item:nth-child(3) { animation-delay: 0.15s; }
-    .list-item:nth-child(4) { animation-delay: 0.2s; }
-    .list-item:nth-child(5) { animation-delay: 0.25s; }
-    .list-item:nth-child(6) { animation-delay: 0.3s; }
-    .list-item:nth-child(7) { animation-delay: 0.35s; }
-    .list-item:nth-child(8) { animation-delay: 0.4s; }
-    .list-item:nth-child(9) { animation-delay: 0.45s; }
-    .list-item:nth-child(10) { animation-delay: 0.5s; }
+    .list-item:nth-child(1) { --animation-delay: 0.05s; }
+    .list-item:nth-child(2) { --animation-delay: 0.1s; }
+    .list-item:nth-child(3) { --animation-delay: 0.15s; }
+    .list-item:nth-child(4) { --animation-delay: 0.2s; }
+    .list-item:nth-child(5) { --animation-delay: 0.25s; }
+    .list-item:nth-child(6) { --animation-delay: 0.3s; }
+    .list-item:nth-child(7) { --animation-delay: 0.35s; }
+    .list-item:nth-child(8) { --animation-delay: 0.4s; }
+    .list-item:nth-child(9) { --animation-delay: 0.45s; }
+    .list-item:nth-child(10) { --animation-delay: 0.5s; }
 
     .pull-refresh {
       position: fixed;
@@ -1195,6 +1199,15 @@
       return outputArray;
     }
 
+    async function fetchAllData() {
+      await Promise.all([
+        fetchEarthquakeInfo().catch(console.error),
+        fetchEewInfo().catch(console.error),
+        fetchTsunamiInfo().catch(console.error),
+        fetchAdminMessage().catch(console.error)
+      ]);
+    }
+
     async function fetchEarthquakeInfo() {
       try {
         const response = await fetch('https://api.p2pquake.net/v2/history?codes=551&limit=10');
@@ -1231,16 +1244,23 @@
         const tsunamiList = await response.json();
         tsunamiData = [];
 
-        for (const tsunami of tsunamiList.slice(0, 10)) {
-          try {
-            const detailResponse = await fetch(`https://www.jma.go.jp/bosai/tsunami/data/${tsunami.json}`);
-            const detailData = await detailResponse.json();
-            tsunamiData.push({ summary: tsunami, details: detailData });
-          } catch (detailError) {
-            console.error(`Error fetching tsunami details for ${tsunami.json}:`, detailError);
-            tsunamiData.push({ summary: tsunami, details: null });
-          }
+        const batchSize = 3;
+        for (let i = 0; i < Math.min(tsunamiList.length, 10); i += batchSize) {
+          const batch = tsunamiList.slice(i, i + batchSize);
+          const batchPromises = batch.map(async (tsunami) => {
+            try {
+              const detailResponse = await fetch(`https://www.jma.go.jp/bosai/tsunami/data/${tsunami.json}`);
+              const detailData = await detailResponse.json();
+              return { summary: tsunami, details: detailData };
+            } catch (detailError) {
+              console.error(`Error fetching tsunami details for ${tsunami.json}:`, detailError);
+              return { summary: tsunami, details: null };
+            }
+          });
+          const batchResults = await Promise.all(batchPromises);
+          tsunamiData.push(...batchResults);
         }
+
         displayTsunamiList(tsunamiData);
       } catch (error) {
         console.error('Error fetching tsunami information:', error);
@@ -1254,7 +1274,7 @@
 
     function displayEarthquakeList(earthquakes) {
       const container = document.getElementById('earthquakeList');
-      container.innerHTML = '';
+      const fragment = document.createDocumentFragment();
 
       if (!earthquakes || earthquakes.length === 0) {
         container.innerHTML = `
@@ -1296,20 +1316,23 @@
             </div>
           </div>
           <div class="item-actions">
-            <button class="btn-icon" onclick="event.stopPropagation(); copyEarthquakeInfo(${index}, this)" title="コピー">
+            <button class="btn-icon" data-action="copy-earthquake" data-index="${index}" title="コピー">
               ${ICON_COPY}
             </button>
             <span class="chevron">›</span>
           </div>
         `;
 
-        container.appendChild(listItem);
+        fragment.appendChild(listItem);
       });
+
+      container.innerHTML = '';
+      container.appendChild(fragment);
     }
 
     function displayEewList(data) {
       const container = document.getElementById('eewList');
-      container.innerHTML = '';
+      const fragment = document.createDocumentFragment();
 
       if (!data.Title || !data.CodeType) {
         container.innerHTML = `
@@ -1353,19 +1376,21 @@
           ` : '<div class="item-subtitle">先程の速報は取り消されました</div>'}
         </div>
         <div class="item-actions">
-          <button class="btn-icon" onclick="event.stopPropagation(); copyEewInfo(this)">
+          <button class="btn-icon" data-action="copy-eew" title="コピー">
             ${ICON_COPY}
           </button>
           <span class="chevron">›</span>
         </div>
       `;
 
-      container.appendChild(listItem);
+      fragment.appendChild(listItem);
+      container.innerHTML = '';
+      container.appendChild(fragment);
     }
 
     function displayTsunamiList(tsunamis) {
       const container = document.getElementById('tsunamiList');
-      container.innerHTML = '';
+      const fragment = document.createDocumentFragment();
 
       if (!tsunamis || tsunamis.length === 0) {
         container.innerHTML = `
@@ -1427,15 +1452,18 @@
             </div>
           </div>
           <div class="item-actions">
-            <button class="btn-icon" onclick="event.stopPropagation(); copyTsunamiInfo(${index}, this)">
+            <button class="btn-icon" data-action="copy-tsunami" data-index="${index}" title="コピー">
               ${ICON_COPY}
             </button>
             <span class="chevron">›</span>
           </div>
         `;
 
-        container.appendChild(listItem);
+        fragment.appendChild(listItem);
       });
+
+      container.innerHTML = '';
+      container.appendChild(fragment);
     }
 
     async function copyEarthquakeInfo(index, button) {
@@ -1665,9 +1693,10 @@
     }
 
     let lastScrollY = 0;
+    let ticking = false;
     const navBar = document.querySelector('.nav-bar');
 
-    window.addEventListener('scroll', () => {
+    function updateNavBar() {
       const currentScrollY = window.scrollY;
       if (currentScrollY > 50) {
         navBar.classList.add('scrolled');
@@ -1675,6 +1704,14 @@
         navBar.classList.remove('scrolled');
       }
       lastScrollY = currentScrollY;
+      ticking = false;
+    }
+
+    window.addEventListener('scroll', () => {
+      if (!ticking) {
+        requestAnimationFrame(updateNavBar);
+        ticking = true;
+      }
     }, { passive: true });
 
     document.getElementById('subscribeButton').addEventListener('click', () => subscribe().catch(console.error));
@@ -1682,10 +1719,26 @@
     document.getElementById('reloadButton').addEventListener('click', () => location.reload());
 
     document.addEventListener('DOMContentLoaded', () => {
-      fetchEarthquakeInfo();
-      fetchEewInfo();
-      fetchTsunamiInfo();
-      fetchAdminMessage();
+      fetchAllData();
+
+      document.addEventListener('click', (e) => {
+        const button = e.target.closest('[data-action]');
+        if (!button) return;
+
+        const action = button.dataset.action;
+        const index = button.dataset.index;
+
+        if (action === 'copy-earthquake') {
+          e.stopPropagation();
+          copyEarthquakeInfo(parseInt(index), button);
+        } else if (action === 'copy-eew') {
+          e.stopPropagation();
+          copyEewInfo(button);
+        } else if (action === 'copy-tsunami') {
+          e.stopPropagation();
+          copyTsunamiInfo(parseInt(index), button);
+        }
+      });
     });
   </script>
 </body>
