@@ -311,6 +311,9 @@
     .badge.forecast { background-color: var(--ios-blue); }
     .badge.watch { background-color: var(--ios-orange); }
     .badge.major { background-color: var(--ios-purple); }
+    .badge.observation { background-color: var(--ios-indigo); }
+    .badge.offshore { background-color: var(--ios-green); }
+    .badge.arrival { background-color: var(--ios-purple); }
 
     .item-actions {
       display: flex;
@@ -693,6 +696,160 @@
       flex-shrink: 0;
       margin-right: 10px;
       box-shadow: 0 2px 6px rgba(0,0,0,0.15);
+    }
+
+    /* Tsunami Premium UI Styling */
+    .tsunami-header-card {
+      background: linear-gradient(135deg, var(--ios-bg-card) 0%, var(--ios-gray6) 100%);
+      border-radius: var(--border-radius-card);
+      padding: 16px;
+      margin-bottom: 16px;
+      border: 1px solid var(--ios-separator);
+      box-shadow: var(--shadow-sm);
+    }
+    
+    @media (prefers-color-scheme: dark) {
+      .tsunami-header-card {
+        background: linear-gradient(135deg, #1C1C1E 0%, #2C2C2E 100%);
+      }
+    }
+    
+    .tsunami-title-group {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      margin-bottom: 12px;
+    }
+    
+    .tsunami-eq-meta {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 8px;
+      font-size: 14px;
+      color: var(--ios-text-secondary);
+      border-top: 0.5px solid var(--ios-separator);
+      padding-top: 10px;
+    }
+    
+    .tsunami-meta-item {
+      display: flex;
+      flex-direction: column;
+    }
+    
+    .tsunami-meta-label {
+      font-size: 11px;
+      text-transform: uppercase;
+      opacity: 0.7;
+    }
+    
+    .tsunami-meta-value {
+      font-weight: 600;
+      color: var(--ios-text-primary);
+    }
+    
+    .tsunami-headline-card {
+      background: rgba(0, 122, 255, 0.08);
+      border-left: 4px solid var(--ios-blue);
+      border-radius: 4px 8px 8px 4px;
+      padding: 12px;
+      margin-bottom: 16px;
+      font-size: 14px;
+      line-height: 1.5;
+    }
+    
+    .tsunami-area-group {
+      background: var(--ios-bg-card);
+      border-radius: var(--border-radius-card);
+      padding: 14px 16px;
+      margin-bottom: 16px;
+      box-shadow: var(--shadow-sm);
+      border: 0.5px solid var(--ios-separator);
+    }
+    
+    .tsunami-area-title {
+      font-size: 16px;
+      font-weight: 700;
+      color: var(--ios-text-primary);
+      margin-bottom: 12px;
+      border-bottom: 1px solid var(--ios-separator);
+      padding-bottom: 6px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+    
+    .tsunami-station-row {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 8px 0;
+    }
+    
+    .tsunami-station-row:not(:last-child) {
+      border-bottom: 0.5px solid var(--ios-separator);
+    }
+    
+    .tsunami-station-info {
+      display: flex;
+      flex-direction: column;
+      gap: 2px;
+    }
+    
+    .tsunami-station-name {
+      font-size: 15px;
+      font-weight: 600;
+    }
+    
+    .tsunami-station-sensor {
+      font-size: 11px;
+      color: var(--ios-text-secondary);
+    }
+    
+    .tsunami-station-times {
+      font-size: 12px;
+      color: var(--ios-text-secondary);
+    }
+    
+    .tsunami-wave-badge {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      padding: 4px 10px;
+      border-radius: 12px;
+      font-size: 13px;
+      font-weight: 700;
+      color: white;
+      min-width: 60px;
+      text-align: center;
+    }
+    
+    .tsunami-wave-badge.height-major { background-color: var(--ios-purple); }
+    .tsunami-wave-badge.height-warning { background-color: var(--ios-red); }
+    .tsunami-wave-badge.height-watch { background-color: var(--ios-orange); }
+    .tsunami-wave-badge.height-minor { background-color: var(--ios-blue); }
+    .tsunami-wave-badge.height-observing {
+      background-color: var(--ios-orange);
+      animation: pulse-orange 1.5s infinite;
+    }
+    .tsunami-wave-badge.height-none { background-color: var(--ios-gray); }
+    
+    @keyframes pulse-orange {
+      0%, 100% { opacity: 1; }
+      50% { opacity: 0.6; }
+    }
+    
+    .tsunami-comment-box {
+      background: var(--ios-gray6);
+      border-radius: var(--border-radius-card);
+      padding: 12px 16px;
+      font-size: 13px;
+      color: var(--ios-text-secondary);
+      line-height: 1.5;
+    }
+    @media (prefers-color-scheme: dark) {
+      .tsunami-comment-box {
+        background: #2C2C2E;
+      }
     }
   </style>
 </head>
@@ -1129,63 +1286,555 @@
       const time = new Date(tsunami.at);
       const date = time.toLocaleDateString('ja-JP', { month: '2-digit', day: '2-digit' });
       const timeStr = time.toLocaleTimeString('ja-JP', { hour: '2-digit', minute: '2-digit' });
+      
+      let titleText = tsunami.ttl || '津波情報';
+      let formattedMessage = `【EWC ${titleText}】\n発生日時：${date} ${timeStr}頃\n震源地：${tsunami.anm || '不明'}\n規模：${tsunami.mag ? 'M' + tsunami.mag : '不明'}`;
 
-      let formattedMessage = `[津波情報]\n${date} ${timeStr}頃\n震源地：${tsunami.anm || '不明'}\n規模：${tsunami.mag ? 'M' + tsunami.mag : '不明'}`;
-
-      if (!detailedData || !detailedData.Body || !detailedData.Body.Tsunami || !detailedData.Body.Tsunami.Forecast) {
+      if (!detailedData || !detailedData.Body || !detailedData.Body.Tsunami) {
         const kind = tsunami.kind && tsunami.kind.length > 0 ? tsunami.kind[0].kind : '不明';
-        formattedMessage += `\n\n【津波情報】\n${kind}\n詳細情報が取得できませんでした。`;
+        formattedMessage += `\n\n【状況】\n${kind}\n※詳細情報は電文から直接取得できませんでした。`;
         return formattedMessage;
       }
 
-      const items = Array.isArray(detailedData.Body.Tsunami.Forecast.Item)
-        ? detailedData.Body.Tsunami.Forecast.Item
-        : [detailedData.Body.Tsunami.Forecast.Item].filter(item => item);
+      const bodyTsunami = detailedData.Body.Tsunami;
 
-      const forecasts = [];
-      const watches = [];
-      const warnings = [];
-      const majorWarnings = [];
+      // 1. Tsunami Warning / Forecast section (津波警報・注意報・予報)
+      if (bodyTsunami.Forecast && bodyTsunami.Forecast.Item) {
+        const items = Array.isArray(bodyTsunami.Forecast.Item)
+          ? bodyTsunami.Forecast.Item
+          : [bodyTsunami.Forecast.Item].filter(item => item);
 
-      items.forEach(item => {
-        const areaName = item.Area?.Name || '不明';
-        const maxHeight = item.MaxHeight?.TsunamiHeight ? `${item.MaxHeight.TsunamiHeight}m` : '不明';
-        const category = typeof item.Category?.Kind === 'string' ? item.Category.Kind : '不明';
+        const forecasts = [];
+        const watches = [];
+        const warnings = [];
+        const majorWarnings = [];
 
-        if (category.includes('予報')) {
-          forecasts.push(`${areaName}　〈${maxHeight}〉`);
-        } else if (category.includes('注意報')) {
-          watches.push(`${areaName}　〈${maxHeight}〉`);
-        } else if (category.includes('警報') && !category.includes('大津波')) {
-          warnings.push(`${areaName}　〈${maxHeight}〉`);
-        } else if (category.includes('大津波')) {
-          majorWarnings.push(`${areaName}　〈${maxHeight}〉`);
-        } else {
-          forecasts.push(`${areaName}　〈${maxHeight}〉`);
+        items.forEach(item => {
+          const areaName = item.Area?.Name || '不明';
+          const maxHeight = item.MaxHeight?.TsunamiHeight ? `${item.MaxHeight.TsunamiHeight}m` : '不明';
+          const category = typeof item.Category?.Kind === 'string' 
+            ? item.Category.Kind 
+            : (item.Category?.Kind?.Name || '不明');
+
+          const entry = `${areaName}　〈${maxHeight}〉`;
+
+          if (category.includes('大津波')) {
+            majorWarnings.push(entry);
+          } else if (category.includes('警報')) {
+            warnings.push(entry);
+          } else if (category.includes('注意報')) {
+            watches.push(entry);
+          } else {
+            forecasts.push(entry);
+          }
+        });
+
+        if (majorWarnings.length > 0) {
+          formattedMessage += `\n\n【大津波警報 🟪】\n現在、大津波警報を発表しています！今すぐ高台や避難ビルへ避難！\n［対象地域］\n${majorWarnings.join('\n')}`;
         }
-      });
-
-      if (forecasts.length > 0) {
-        formattedMessage += `\n\n【津波情報🟦】\n津波予報を発表しました。\n若干の海面変動に注意してください。\n［対象地域］\n${forecasts.join('\n')}`;
+        if (warnings.length > 0) {
+          formattedMessage += `\n\n【津波警報 🟥】\n現在、津波警報を発表しています！高台や近くの避難ビルへ避難！\n［対象地域］\n${warnings.join('\n')}`;
+        }
+        if (watches.length > 0) {
+          formattedMessage += `\n\n【津波注意報 🟨】\n現在、津波注意報を発表しています！海や川から直ちに離れてください。\n［対象地域］\n${watches.join('\n')}`;
+        }
+        if (forecasts.length > 0) {
+          formattedMessage += `\n\n【津波予報（若干の海面変動） 🟦】\n若干の海面変動が予想されますが、被害の心配はありません。\n［対象地域］\n${forecasts.join('\n')}`;
+        }
       }
 
-      if (watches.length > 0) {
-        formattedMessage += `\n\n【津波注意報🟨】\n津波注意報を発表しています。\n海や川から離れてください。\n［対象地域］\n${watches.join('\n')}`;
+      // 2. Tsunami Observation section (実際の観測値)
+      if (bodyTsunami.Observation && bodyTsunami.Observation.Item) {
+        const obsItems = Array.isArray(bodyTsunami.Observation.Item)
+          ? bodyTsunami.Observation.Item
+          : [bodyTsunami.Observation.Item].filter(item => item);
+
+        formattedMessage += `\n\n■ 実測された津波の観測値`;
+
+        obsItems.forEach(item => {
+          const areaName = item.Area?.Name;
+          const stations = Array.isArray(item.Station)
+            ? item.Station
+            : [item.Station].filter(s => s);
+
+          if (areaName) {
+            formattedMessage += `\n\n【${areaName}】`;
+          } else {
+            formattedMessage += `\n\n【沖合・その他観測点】`;
+          }
+
+          stations.forEach(station => {
+            const name = station.Name || '不明';
+            const sensor = station.Sensor ? `（${station.Sensor}）` : '';
+            
+            // Format first wave
+            let firstWaveStr = '第一波：';
+            if (station.FirstHeight) {
+              if (station.FirstHeight.ArrivalTime) {
+                const arrival = new Date(station.FirstHeight.ArrivalTime);
+                const arrTimeStr = arrival.toLocaleTimeString('ja-JP', { hour: '2-digit', minute: '2-digit' });
+                const initial = station.FirstHeight.Initial ? ` (${station.FirstHeight.Initial})` : '';
+                firstWaveStr += `${arrTimeStr}${initial}`;
+              } else if (station.FirstHeight.Condition) {
+                firstWaveStr += station.FirstHeight.Condition;
+              } else {
+                firstWaveStr += '不明';
+              }
+            } else {
+              firstWaveStr += '観測なし';
+            }
+
+            // Format max height
+            let maxHeightStr = '最大波：';
+            if (station.MaxHeight) {
+              if (station.MaxHeight.TsunamiHeight) {
+                maxHeightStr += `${station.MaxHeight.TsunamiHeight}m`;
+                if (station.MaxHeight.DateTime) {
+                  const maxTime = new Date(station.MaxHeight.DateTime);
+                  const maxTimeStr = maxTime.toLocaleTimeString('ja-JP', { hour: '2-digit', minute: '2-digit' });
+                  maxHeightStr += ` (${maxTimeStr})`;
+                }
+              } else if (station.MaxHeight.Condition) {
+                maxHeightStr += station.MaxHeight.Condition;
+              } else {
+                maxHeightStr += '不明';
+              }
+            } else {
+              maxHeightStr += '観測なし';
+            }
+
+            formattedMessage += `\n・${name}${sensor}\n　└ ${maxHeightStr} / ${firstWaveStr}`;
+          });
+        });
       }
 
-      if (warnings.length > 0) {
-        formattedMessage += `\n\n【津波警報🟥】\n津波警報を発表しています！\n高台や近くのビルへ避難！\n【対象地域】\n${warnings.join('\n')}\n津波は1mでも人や物を押し倒します！`;
+      // 3. Tsunami Estimation section (沿岸での到達予想・高さ推定)
+      if (bodyTsunami.Estimation && bodyTsunami.Estimation.Item) {
+        const estItems = Array.isArray(bodyTsunami.Estimation.Item)
+          ? bodyTsunami.Estimation.Item
+          : [bodyTsunami.Estimation.Item].filter(item => item);
+
+        formattedMessage += `\n\n■ 沿岸での津波到達・高さの推定`;
+
+        estItems.forEach(item => {
+          const areaName = item.Area?.Name || '不明';
+          
+          let firstWaveStr = '第一波推定：';
+          if (item.FirstHeight) {
+            if (item.FirstHeight.ArrivalTime) {
+              const arrival = new Date(item.FirstHeight.ArrivalTime);
+              const arrTimeStr = arrival.toLocaleTimeString('ja-JP', { hour: '2-digit', minute: '2-digit' });
+              firstWaveStr += `${arrTimeStr}頃`;
+            }
+            if (item.FirstHeight.Condition) {
+              firstWaveStr += ` ${item.FirstHeight.Condition}`;
+            }
+          } else {
+            firstWaveStr += '不明';
+          }
+
+          let maxHeightStr = '最大波推定：';
+          if (item.MaxHeight) {
+            if (item.MaxHeight.TsunamiHeight) {
+              maxHeightStr += `${item.MaxHeight.TsunamiHeight}m`;
+            }
+            if (item.MaxHeight.Condition) {
+              maxHeightStr += ` ${item.MaxHeight.Condition}`;
+            }
+            if (item.MaxHeight.DateTime) {
+              const maxTime = new Date(item.MaxHeight.DateTime);
+              const maxTimeStr = maxTime.toLocaleTimeString('ja-JP', { hour: '2-digit', minute: '2-digit' });
+              maxHeightStr += ` (${maxTimeStr}頃)`;
+            }
+          } else {
+            maxHeightStr += '不明';
+          }
+
+          formattedMessage += `\n【${areaName}】\n　└ ${maxHeightStr} / ${firstWaveStr}`;
+        });
       }
 
-      if (majorWarnings.length > 0) {
-        formattedMessage += `\n\n【大津波警報🟪】\n大津波警報を発表しています！\n今すぐ高台やビルに避難！\n［対象地域］\n${majorWarnings.join('\n')}\n⚠絶対に避難⚠`;
-      }
-
+      // JMA General Comments
       if (detailedData.Comments && detailedData.Comments.WarningComment && detailedData.Comments.WarningComment.Text) {
-        formattedMessage += `\n\n【情報】\n${detailedData.Comments.WarningComment.Text}`;
+        formattedMessage += `\n\n【気象庁からの情報】\n${detailedData.Comments.WarningComment.Text}`;
       }
 
       return formattedMessage;
+    }
+
+    function renderTsunamiDetailHtml(summary, details) {
+      const time = new Date(summary.at);
+      const date = time.toLocaleDateString('ja-JP', { month: '2-digit', day: '2-digit' });
+      const timeStr = time.toLocaleTimeString('ja-JP', { hour: '2-digit', minute: '2-digit' });
+      const rTime = new Date(summary.rdt);
+      const rTimeStr = rTime.toLocaleString('ja-JP', { month: '2-digit', day: '2-digit', hour: '2-digit', minute: '2-digit' });
+      
+      let badgeClass = 'forecast';
+      let badgeText = '予報';
+      let titleText = summary.ttl || '津波情報';
+      
+      // Determine badge class for header
+      if (summary.ttl === '津波観測に関する情報') { badgeClass = 'observation'; badgeText = '津波観測'; }
+      else if (summary.ttl === '沖合の津波観測に関する情報') { badgeClass = 'offshore'; badgeText = '沖合観測'; }
+      else if (summary.ttl === '各地の満潮時刻・津波到達予想時刻に関する情報') { badgeClass = 'arrival'; badgeText = '到達予想'; }
+      else if (details?.Body?.Tsunami?.Forecast) {
+        const items = Array.isArray(details.Body.Tsunami.Forecast.Item)
+          ? details.Body.Tsunami.Forecast.Item
+          : [details.Body.Tsunami.Forecast.Item].filter(item => item);
+        let hasMajor = false, hasWarn = false, hasWatch = false;
+        items.forEach(item => {
+          const kind = typeof item.Category?.Kind === 'string' ? item.Category.Kind : (item.Category?.Kind?.Name || '');
+          if (kind.includes('大津波')) hasMajor = true;
+          else if (kind.includes('警報')) hasWarn = true;
+          else if (kind.includes('注意報')) hasWatch = true;
+        });
+        if (hasMajor) { badgeClass = 'major'; badgeText = '大津波警報'; }
+        else if (hasWarn) { badgeClass = 'warning'; badgeText = '津波警報'; }
+        else if (hasWatch) { badgeClass = 'watch'; badgeText = '津波注意報'; }
+      }
+
+      let html = `
+        <div class="tsunami-header-card">
+          <div class="tsunami-title-group">
+            <span class="badge ${badgeClass}">${badgeText}</span>
+            <span style="font-size: 18px; font-weight: 700;">${titleText}</span>
+          </div>
+          <div style="font-size: 13px; color: var(--ios-text-secondary); margin-bottom: 10px;">
+            発表時刻: ${rTimeStr} (${summary.ift})
+          </div>
+          <div class="tsunami-eq-meta">
+            <div class="tsunami-meta-item">
+              <span class="tsunami-meta-label">発生日時</span>
+              <span class="tsunami-meta-value">${date} ${timeStr}頃</span>
+            </div>
+            <div class="tsunami-meta-item">
+              <span class="tsunami-meta-label">震源地</span>
+              <span class="tsunami-meta-value">${summary.anm || '不明'}</span>
+            </div>
+            <div class="tsunami-meta-item" style="margin-top: 6px;">
+              <span class="tsunami-meta-label">地震の規模</span>
+              <span class="tsunami-meta-value">${summary.mag ? 'M' + summary.mag : '不明'}</span>
+            </div>
+            <div class="tsunami-meta-item" style="margin-top: 6px;">
+              <span class="tsunami-meta-label">深さ</span>
+              <span class="tsunami-meta-value">${details?.Body?.Earthquake?.[0]?.Hypocenter?.Area?.Coordinate ? parseDepth(details.Body.Earthquake[0].Hypocenter.Area.Coordinate) : '不明'}</span>
+            </div>
+          </div>
+        </div>
+      `;
+
+      if (details?.Head?.Headline?.Text) {
+        html += `
+          <div class="tsunami-headline-card">
+            ${details.Head.Headline.Text}
+          </div>
+        `;
+      }
+
+      if (!details || !details.Body || !details.Body.Tsunami) {
+        html += `
+          <div class="tsunami-comment-box" style="text-align: center; padding: 20px;">
+            ⚠️ 詳細なデータがありません。<br>気象庁などの最新情報をご確認ください。
+          </div>
+        `;
+        return html;
+      }
+
+      const bodyTsunami = details.Body.Tsunami;
+
+      // 1. Forecast/Warning Panel
+      if (bodyTsunami.Forecast && bodyTsunami.Forecast.Item) {
+        const items = Array.isArray(bodyTsunami.Forecast.Item)
+          ? bodyTsunami.Forecast.Item
+          : [bodyTsunami.Forecast.Item].filter(item => item);
+
+        html += `<div class="section-title" style="padding-left: 0;">津波予報・警報の発表地域</div>`;
+        html += `<div class="tsunami-area-group">`;
+        
+        items.forEach(item => {
+          const areaName = item.Area?.Name || '不明';
+          const heightStr = item.MaxHeight?.TsunamiHeight || '';
+          const categoryName = typeof item.Category?.Kind === 'string' 
+            ? item.Category.Kind 
+            : (item.Category?.Kind?.Name || '不明');
+          
+          let heightVal = heightStr ? `${heightStr}m` : '不明';
+          let heightClass = getWaveHeightClass(heightStr, '');
+          if (categoryName.includes('大津波')) heightClass = 'height-major';
+          else if (categoryName.includes('警報')) heightClass = 'height-warning';
+          else if (categoryName.includes('注意報')) heightClass = 'height-watch';
+
+          html += `
+            <div class="tsunami-station-row">
+              <div class="tsunami-station-info">
+                <span class="tsunami-station-name">${areaName}</span>
+                <span class="tsunami-station-sensor">${categoryName}</span>
+              </div>
+              <span class="tsunami-wave-badge ${heightClass}">${heightVal}</span>
+            </div>
+          `;
+        });
+        
+        html += `</div>`;
+      }
+
+      // 2. Observations Panel
+      if (bodyTsunami.Observation && bodyTsunami.Observation.Item) {
+        const obsItems = Array.isArray(bodyTsunami.Observation.Item)
+          ? bodyTsunami.Observation.Item
+          : [bodyTsunami.Observation.Item].filter(item => item);
+
+        html += `<div class="section-title" style="padding-left: 0;">各地の津波観測値</div>`;
+
+        obsItems.forEach(item => {
+          const areaName = item.Area?.Name || '沖合・その他観測点';
+          const stations = Array.isArray(item.Station) ? item.Station : [item.Station].filter(s => s);
+
+          html += `
+            <div class="tsunami-area-group">
+              <div class="tsunami-area-title">${areaName}</div>
+          `;
+
+          stations.forEach(station => {
+            const name = station.Name || '不明';
+            const sensor = station.Sensor ? ` [${station.Sensor}]` : '';
+            const heightStr = station.MaxHeight?.TsunamiHeight || '';
+            const condition = station.MaxHeight?.Condition || '';
+            
+            let heightText = '';
+            if (heightStr) {
+              heightText = `${heightStr}m`;
+            } else if (condition) {
+              heightText = condition;
+            } else {
+              heightText = '---';
+            }
+
+            const heightClass = getWaveHeightClass(heightStr, condition);
+
+            // Time format
+            let firstWaveText = '';
+            if (station.FirstHeight) {
+              if (station.FirstHeight.ArrivalTime) {
+                const arr = new Date(station.FirstHeight.ArrivalTime);
+                const arrStr = arr.toLocaleTimeString('ja-JP', { hour: '2-digit', minute: '2-digit' });
+                const initial = station.FirstHeight.Initial ? ` (${station.FirstHeight.Initial})` : '';
+                firstWaveText = `第1波: ${arrStr}${initial}`;
+              } else if (station.FirstHeight.Condition) {
+                firstWaveText = `第1波: ${station.FirstHeight.Condition}`;
+              }
+            }
+
+            let maxWaveTimeText = '';
+            if (station.MaxHeight && station.MaxHeight.DateTime) {
+              const maxD = new Date(station.MaxHeight.DateTime);
+              const maxDStr = maxD.toLocaleTimeString('ja-JP', { hour: '2-digit', minute: '2-digit' });
+              maxWaveTimeText = ` (最大波観測: ${maxDStr})`;
+            }
+
+            html += `
+              <div class="tsunami-station-row">
+                <div class="tsunami-station-info">
+                  <span class="tsunami-station-name">${name}<span style="font-size:11px; font-weight:normal; opacity:0.6;">${sensor}</span></span>
+                  <span class="tsunami-station-times">${firstWaveText}${maxWaveTimeText}</span>
+                </div>
+                <span class="tsunami-wave-badge ${heightClass}">${heightText}</span>
+              </div>
+            `;
+          });
+
+          html += `</div>`;
+        });
+      }
+
+      // 3. Estimations Panel
+      if (bodyTsunami.Estimation && bodyTsunami.Estimation.Item) {
+        const estItems = Array.isArray(bodyTsunami.Estimation.Item)
+          ? bodyTsunami.Estimation.Item
+          : [bodyTsunami.Estimation.Item].filter(item => item);
+
+        html += `<div class="section-title" style="padding-left: 0;">沿岸での津波到達・高さの推定</div>`;
+        html += `<div class="tsunami-area-group">`;
+
+        estItems.forEach(item => {
+          const areaName = item.Area?.Name || '不明';
+          const heightStr = item.MaxHeight?.TsunamiHeight || '';
+          const condition = item.MaxHeight?.Condition || '';
+          
+          let heightText = '';
+          if (heightStr) heightText = `${heightStr}m`;
+          else if (condition) heightText = condition;
+          else heightText = '推定中';
+
+          const heightClass = getWaveHeightClass(heightStr, condition);
+
+          let firstWaveText = '第1波到達予想: ';
+          if (item.FirstHeight) {
+            if (item.FirstHeight.ArrivalTime) {
+              const arr = new Date(item.FirstHeight.ArrivalTime);
+              const arrStr = arr.toLocaleTimeString('ja-JP', { hour: '2-digit', minute: '2-digit' });
+              firstWaveText += `${arrStr}頃`;
+            }
+            if (item.FirstHeight.Condition) {
+              firstWaveText += ` (${item.FirstHeight.Condition})`;
+            }
+          } else {
+            firstWaveText += '推定中';
+          }
+
+          html += `
+            <div class="tsunami-station-row">
+              <div class="tsunami-station-info">
+                <span class="tsunami-station-name">${areaName}</span>
+                <span class="tsunami-station-times">${firstWaveText}</span>
+              </div>
+              <span class="tsunami-wave-badge ${heightClass}">${heightText}</span>
+            </div>
+          `;
+        });
+
+        html += `</div>`;
+      }
+
+      // 4. Comments
+      if (details.Comments?.WarningComment?.Text) {
+        html += `
+          <div class="section-title" style="padding-left: 0;">解説情報</div>
+          <div class="tsunami-comment-box">
+            ${details.Comments.WarningComment.Text.replace(/\n/g, '<br>')}
+          </div>
+        `;
+      }
+
+      return html;
+    }
+
+    function getWaveHeightClass(heightStr, condition) {
+      if (condition === '観測中' || condition === '上昇中') {
+        return 'height-observing';
+      }
+      if (condition === '微小' || condition === '微弱') {
+        return 'height-minor';
+      }
+      if (!heightStr) {
+        return 'height-none';
+      }
+      
+      const height = parseFloat(heightStr.replace(/[<m]/g, ''));
+      if (isNaN(height)) {
+        return 'height-none';
+      }
+      
+      if (height >= 3.0) return 'height-major';
+      if (height >= 1.0) return 'height-warning';
+      if (height >= 0.2) return 'height-watch';
+      return 'height-minor';
+    }
+
+    function parseDepth(coordStr) {
+      if (!coordStr) return '不明';
+      const parts = coordStr.split('-');
+      if (parts.length >= 2) {
+        const meters = parseInt(parts[parts.length - 1]);
+        if (!isNaN(meters)) {
+          if (meters === 0) return 'ごく浅い';
+          return `約${meters / 1000}km`;
+        }
+      }
+      return '不明';
+    }
+
+    function getTsunamiSummaryText(summary, details) {
+      if (!details || !details.Body || !details.Body.Tsunami) {
+        return `${summary.ttl}が発表されました。`;
+      }
+      
+      const bodyTsunami = details.Body.Tsunami;
+
+      // Coastal Observations
+      if (summary.ttl === '津波観測に関する情報' && bodyTsunami.Observation) {
+        let maxObs = null;
+        let maxObsStation = '';
+        let count = 0;
+
+        const obsItems = Array.isArray(bodyTsunami.Observation.Item)
+          ? bodyTsunami.Observation.Item
+          : [bodyTsunami.Observation.Item].filter(item => item);
+
+        obsItems.forEach(item => {
+          const stations = Array.isArray(item.Station) ? item.Station : [item.Station].filter(s => s);
+          stations.forEach(s => {
+            count++;
+            const hStr = s.MaxHeight?.TsunamiHeight;
+            if (hStr) {
+              const h = parseFloat(hStr);
+              if (!isNaN(h) && (maxObs === null || h > maxObs)) {
+                maxObs = h;
+                maxObsStation = s.Name;
+              }
+            }
+          });
+        });
+
+        if (maxObs !== null) {
+          return `${maxObsStation}で最大${maxObs}mの津波を観測（計${count}地点で観測中）`;
+        }
+        return `各地で津波を観測しています（計${count}地点）`;
+      }
+
+      // Offshore Observations
+      if (summary.ttl === '沖合の津波観測に関する情報' && bodyTsunami.Observation) {
+        let activeStations = [];
+        const obsItems = Array.isArray(bodyTsunami.Observation.Item)
+          ? bodyTsunami.Observation.Item
+          : [bodyTsunami.Observation.Item].filter(item => item);
+
+        obsItems.forEach(item => {
+          const stations = Array.isArray(item.Station) ? item.Station : [item.Station].filter(s => s);
+          stations.forEach(s => {
+            if (s.FirstHeight?.ArrivalTime || s.MaxHeight?.Condition === '観測中') {
+              activeStations.push(s.Name.replace(/[５０ｋｍＡＢ]/g, ''));
+            }
+          });
+        });
+
+        if (activeStations.length > 0) {
+          const sample = activeStations.slice(0, 3).join('、');
+          const suffix = activeStations.length > 3 ? 'など' : '';
+          return `${sample}${suffix}の沖合で津波を観測中（沿岸に到達の可能性）`;
+        }
+        return '沖合の観測点で津波を観測しています。';
+      }
+
+      // Warnings and Forecasts
+      if (bodyTsunami.Forecast && bodyTsunami.Forecast.Item) {
+        const items = Array.isArray(bodyTsunami.Forecast.Item)
+          ? bodyTsunami.Forecast.Item
+          : [bodyTsunami.Forecast.Item].filter(item => item);
+
+        let maxCategory = '';
+        let majorCount = 0;
+        let warnCount = 0;
+        let watchCount = 0;
+        let forecastCount = 0;
+
+        items.forEach(item => {
+          const category = typeof item.Category?.Kind === 'string' 
+            ? item.Category.Kind 
+            : (item.Category?.Kind?.Name || '不明');
+          if (category.includes('大津波')) majorCount++;
+          else if (category.includes('警報')) warnCount++;
+          else if (category.includes('注意報')) watchCount++;
+          else forecastCount++;
+        });
+
+        if (majorCount > 0) return `${majorCount}地域に「大津波警報」を発表中！直ちに高台へ避難！`;
+        if (warnCount > 0) return `${warnCount}地域に「津波警報」、${watchCount}地域に注意報を発表中。`;
+        if (watchCount > 0) return `${watchCount}地域に「津波注意報」を発表中。海から離れてください。`;
+        return `${forecastCount}地域に「若干の海面変動（予報）」が発表されています。`;
+      }
+
+      return `${summary.ttl}が発表されました。`;
     }
 
     function urlBase64ToUint8Array(base64String) {
@@ -1409,31 +2058,46 @@
 
         const hypocenter = summary.anm || '不明';
         const magnitude = summary.mag ? `M${summary.mag}` : '不明';
+        
         let badgeClass = 'forecast';
         let badgeText = '予報';
 
-        const items = tsunami.details?.Body?.Tsunami?.Forecast?.Item;
-        let hasMajor = false, hasWarn = false, hasWatch = false;
+        if (summary.ttl === '津波観測に関する情報') {
+          badgeClass = 'observation';
+          badgeText = '津波観測';
+        } else if (summary.ttl === '沖合の津波観測に関する情報') {
+          badgeClass = 'offshore';
+          badgeText = '沖合観測';
+        } else if (summary.ttl === '各地の満潮時刻・津波到達予想時刻に関する情報') {
+          badgeClass = 'arrival';
+          badgeText = '到達予想';
+        } else {
+          // Warning & Forecast categories
+          const items = tsunami.details?.Body?.Tsunami?.Forecast?.Item;
+          let hasMajor = false, hasWarn = false, hasWatch = false;
 
-        if (items) {
-          const categories = Array.isArray(items)
-            ? items.map(item => typeof item.Category?.Kind === 'string' ? item.Category.Kind : '不明')
-            : [typeof items.Category?.Kind === 'string' ? items.Category.Kind : '不明'];
+          if (items) {
+            const categories = Array.isArray(items)
+              ? items.map(item => typeof item.Category?.Kind === 'string' ? item.Category.Kind : (item.Category?.Kind?.Name || '不明'))
+              : [typeof items.Category?.Kind === 'string' ? items.Category.Kind : (items.Category?.Kind?.Name || '不明')];
 
-          if (categories.some(kind => kind.includes('大津波'))) hasMajor = true;
-          else if (categories.some(kind => kind.includes('警報'))) hasWarn = true;
-          else if (categories.some(kind => kind.includes('注意報'))) hasWatch = true;
-        } else if (summary.kind && summary.kind.length > 0) {
-          const kind = summary.kind[0].kind;
-          if (kind.includes('大津波')) hasMajor = true;
-          else if (kind.includes('警報')) hasWarn = true;
-          else if (kind.includes('注意報')) hasWatch = true;
-          else badgeText = kind;
+            if (categories.some(kind => kind.includes('大津波'))) hasMajor = true;
+            else if (categories.some(kind => kind.includes('警報'))) hasWarn = true;
+            else if (categories.some(kind => kind.includes('注意報'))) hasWatch = true;
+          } else if (summary.kind && summary.kind.length > 0) {
+            const kind = summary.kind[0].kind;
+            if (kind.includes('大津波')) hasMajor = true;
+            else if (kind.includes('警報')) hasWarn = true;
+            else if (kind.includes('注意報')) hasWatch = true;
+            else badgeText = kind;
+          }
+
+          if (hasMajor) { badgeClass = 'major'; badgeText = '大津波警報'; }
+          else if (hasWarn) { badgeClass = 'warning'; badgeText = '津波警報'; }
+          else if (hasWatch) { badgeClass = 'watch'; badgeText = '津波注意報'; }
         }
 
-        if (hasMajor) { badgeClass = 'major'; badgeText = '大津波警報'; }
-        else if (hasWarn) { badgeClass = 'warning'; badgeText = '津波警報'; }
-        else if (hasWatch) { badgeClass = 'watch'; badgeText = '津波注意報'; }
+        const detailText = getTsunamiSummaryText(summary, tsunami.details);
 
         const listItem = document.createElement('div');
         listItem.className = 'list-item';
@@ -1448,7 +2112,7 @@
             </div>
             <div class="item-subtitle">${hypocenter} ${magnitude}</div>
             <div class="item-detail-text">
-              ${summary.ift}
+              ${detailText}
             </div>
           </div>
           <div class="item-actions">
@@ -1551,8 +2215,9 @@
     function showTsunamiDetail(index) {
       const tsunami = tsunamiData[index];
       const formattedMessage = generateDetailedTsunamiText(tsunami.summary, tsunami.details);
+      const beautifulHtml = renderTsunamiDetailHtml(tsunami.summary, tsunami.details);
 
-      document.getElementById('tsunamiDetailInfo').innerHTML = formattedMessage.replace(/\n/g, '<br>');
+      document.getElementById('tsunamiDetailInfo').innerHTML = beautifulHtml;
       document.getElementById('tsunamiDetailTextarea').value = formattedMessage;
 
       const shareButton = document.getElementById('tsunamiShareButton');
