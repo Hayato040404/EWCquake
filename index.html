@@ -19,6 +19,9 @@
   <link rel="icon" type="image/x-icon" href="/favicon.ico">
   <link rel="apple-touch-icon" sizes="180x180" href="/ewc.png">
   <link rel="icon" type="image/png" sizes="192x192" href="/ewc.png">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Outfit:wght@500;600;700;800&family=Noto+Sans+JP:wght@400;500;700&display=swap" rel="stylesheet">
 
   <style>
     /* iOS Design System Variables */
@@ -84,12 +87,16 @@
     }
 
     body {
-      font-family: -apple-system, BlinkMacSystemFont, "SF Pro Text", "Helvetica Neue", Helvetica, Arial, sans-serif;
+      font-family: 'Inter', 'Noto Sans JP', -apple-system, BlinkMacSystemFont, sans-serif;
       background-color: var(--ios-bg-primary);
       color: var(--ios-text-primary);
       line-height: 1.4;
       padding-bottom: calc(60px + var(--safe-area-bottom));
       -webkit-font-smoothing: antialiased;
+    }
+    
+    .nav-large-title {
+      font-family: 'Outfit', sans-serif;
     }
 
     .container {
@@ -142,10 +149,18 @@
     }
 
     .app-version {
-      font-size: 13px;
-      color: var(--ios-text-secondary);
-      font-weight: 400;
-      margin-bottom: 6px;
+      font-size: 10px;
+      color: var(--ios-blue);
+      background: rgba(0, 122, 255, 0.1);
+      font-weight: 600;
+      display: inline-block;
+      margin-left: 8px;
+      padding: 2px 6px;
+      border-radius: 6px;
+      vertical-align: middle;
+      letter-spacing: 0.5px;
+      text-transform: uppercase;
+      font-family: 'Outfit', sans-serif;
     }
 
     .control-bar {
@@ -206,12 +221,11 @@
     }
 
     .section-title {
-      padding: 24px 16px 8px;
-      font-size: 13px;
-      text-transform: uppercase;
-      color: var(--ios-text-secondary);
-      font-weight: 400;
-      letter-spacing: -0.1px;
+      padding: 28px 16px 10px;
+      font-size: 14px;
+      font-weight: 700;
+      color: var(--ios-text-primary);
+      font-family: 'Outfit', sans-serif;
     }
 
     .list-group {
@@ -219,6 +233,9 @@
       border-radius: var(--border-radius-card);
       margin: 0 16px;
       overflow: hidden;
+      box-shadow: 0 4px 16px rgba(0,0,0,0.04);
+      border: 1px solid var(--ios-separator);
+      transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
     }
 
     .list-item {
@@ -380,9 +397,43 @@
       position: fixed;
       top: 0; left: 0; right: 0; bottom: 0;
       z-index: 2000;
-      background-color: var(--ios-bg-primary);
+      background-color: transparent;
       flex-direction: column;
-      animation: slideUp 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+      justify-content: flex-end;
+      align-items: center;
+    }
+
+    .detail-container {
+      background-color: var(--ios-bg-modal);
+      width: 100%;
+      height: 100%;
+      display: flex;
+      flex-direction: column;
+      transform: translateY(100%);
+      will-change: transform;
+      box-shadow: 0 -4px 24px rgba(0,0,0,0.15);
+    }
+
+    @media (min-width: 701px) {
+      .detail-view {
+        justify-content: center;
+        background-color: transparent;
+      }
+      .detail-container {
+        width: 600px;
+        height: 85vh;
+        border-radius: 20px;
+        border: 1px solid var(--ios-separator);
+      }
+    }
+
+    @media (max-width: 700px) {
+      .detail-container {
+        margin-top: 40px;
+        border-top-left-radius: 20px;
+        border-top-right-radius: 20px;
+        height: calc(100% - 40px);
+      }
     }
 
     @keyframes slideUp {
@@ -403,6 +454,8 @@
       padding: 0 16px;
       border-bottom: 0.5px solid var(--ios-separator);
       flex-shrink: 0;
+      border-top-left-radius: inherit;
+      border-top-right-radius: inherit;
     }
 
     .detail-title {
@@ -597,17 +650,6 @@
       animation-delay: var(--animation-delay, 0s);
     }
 
-    .list-item:nth-child(1) { --animation-delay: 0.05s; }
-    .list-item:nth-child(2) { --animation-delay: 0.1s; }
-    .list-item:nth-child(3) { --animation-delay: 0.15s; }
-    .list-item:nth-child(4) { --animation-delay: 0.2s; }
-    .list-item:nth-child(5) { --animation-delay: 0.25s; }
-    .list-item:nth-child(6) { --animation-delay: 0.3s; }
-    .list-item:nth-child(7) { --animation-delay: 0.35s; }
-    .list-item:nth-child(8) { --animation-delay: 0.4s; }
-    .list-item:nth-child(9) { --animation-delay: 0.45s; }
-    .list-item:nth-child(10) { --animation-delay: 0.5s; }
-
     .pull-refresh {
       position: fixed;
       top: calc(var(--safe-area-top) + 100px);
@@ -663,24 +705,88 @@
       }
     }
 
-    .status-indicator {
-      display: inline-block;
-      width: 8px;
-      height: 8px;
-      border-radius: 50%;
-      margin-right: 6px;
-      background: var(--ios-green);
+    .feedback-widget {
+      position: fixed;
+      bottom: 24px;
+      left: 24px;
+      z-index: 999;
+      background: rgba(255, 255, 255, 0.85);
+      backdrop-filter: blur(20px);
+      -webkit-backdrop-filter: blur(20px);
+      border: 1px solid var(--ios-separator);
+      border-radius: 14px;
+      padding: 12px 16px;
+      box-shadow: 0 8px 32px rgba(0, 0, 0, 0.08);
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+      max-width: 280px;
+      animation: fadeInUp 0.4s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+      font-size: 13px;
+      transition: opacity 0.3s ease, transform 0.3s ease;
     }
-    .status-indicator.offline {
-      background: var(--ios-red);
+    
+    .feedback-title {
+      font-weight: 600;
+      color: var(--ios-text-primary);
+      padding-right: 12px;
     }
-    .status-indicator.updating {
-      background: var(--ios-orange);
-      animation: pulse 1s infinite;
+    
+    .feedback-buttons {
+      display: flex;
+      gap: 8px;
     }
-    @keyframes pulse {
-      0%, 100% { opacity: 1; }
-      50% { opacity: 0.5; }
+    
+    .feedback-btn {
+      background: var(--ios-gray6);
+      border: none;
+      border-radius: 6px;
+      padding: 4px 12px;
+      font-size: 12px;
+      font-weight: 600;
+      color: var(--ios-text-primary);
+      cursor: pointer;
+      transition: background 0.2s, opacity 0.2s;
+    }
+    
+    .feedback-btn:active {
+      opacity: 0.7;
+    }
+    
+    .feedback-btn.like {
+      color: var(--ios-blue);
+      background: rgba(0, 122, 255, 0.1);
+    }
+    
+    .feedback-btn.dislike {
+      color: var(--ios-red);
+      background: rgba(255, 59, 48, 0.1);
+    }
+
+    .feedback-close {
+      position: absolute;
+      top: 10px;
+      right: 10px;
+      border: none;
+      background: transparent;
+      font-size: 14px;
+      color: var(--ios-text-secondary);
+      cursor: pointer;
+      line-height: 1;
+      padding: 2px;
+    }
+    .feedback-close:hover {
+      color: var(--ios-text-primary);
+    }
+    
+    @media (prefers-color-scheme: dark) {
+      .feedback-widget {
+        background: rgba(28, 28, 30, 0.85);
+        box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+      }
+      .feedback-btn {
+        background: #2C2C2E;
+      }
     }
 
     .shindo-circle {
@@ -691,11 +797,81 @@
       align-items: center;
       justify-content: center;
       color: white;
-      font-size: 12px;
+      font-size: 13px;
       font-weight: 700;
+      font-family: 'Outfit', sans-serif;
       flex-shrink: 0;
       margin-right: 10px;
       box-shadow: 0 2px 6px rgba(0,0,0,0.15);
+    }
+
+    .modal-backdrop {
+      display: none;
+      position: fixed;
+      top: 0; left: 0; right: 0; bottom: 0;
+      background: rgba(0,0,0,0.4);
+      backdrop-filter: blur(5px);
+      -webkit-backdrop-filter: blur(5px);
+      z-index: 1999;
+      opacity: 0;
+      transition: opacity 0.3s ease;
+    }
+    .modal-backdrop.show {
+      display: block;
+      opacity: 1;
+    }
+
+    .item-meta {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 6px;
+      margin-top: 6px;
+      align-items: center;
+    }
+    .meta-pill {
+      font-size: 11px;
+      padding: 3px 8px;
+      border-radius: 6px;
+      background: var(--ios-gray6);
+      color: var(--ios-text-secondary);
+      font-weight: 600;
+      letter-spacing: -0.1px;
+    }
+    @media (prefers-color-scheme: dark) {
+      .meta-pill {
+        background: #2C2C2E;
+        color: #AEAEB2;
+      }
+    }
+    .meta-pill.primary {
+      background: rgba(0, 122, 255, 0.12);
+      color: var(--ios-blue);
+    }
+    .meta-pill.warning {
+      background: rgba(255, 59, 48, 0.12);
+      color: var(--ios-red);
+    }
+    .meta-pill.info {
+      background: rgba(142, 142, 147, 0.12);
+      color: var(--ios-gray);
+    }
+    .tsunami-badge-wrapper .badge {
+      height: 18px;
+      font-size: 10px;
+      padding: 1px 6px;
+      font-weight: 700;
+    }
+    
+    .list-item {
+      transition: background-color 0.2s ease, transform 0.2s ease;
+    }
+    .list-item:active {
+      transform: scale(0.985);
+    }
+    @media (hover: hover) {
+      .list-item:hover {
+        background-color: rgba(118, 118, 128, 0.05);
+      }
     }
 
     /* Tsunami Premium UI Styling */
@@ -854,24 +1030,18 @@
   </style>
 </head>
 <body>
+  <div id="modalBackdrop" class="modal-backdrop" onclick="closeAllDetails()"></div>
 
   <div class="nav-bar">
     <div class="container" style="width: 100%; padding: 0;">
       <div class="nav-large-title">
         <div>
-          地震情報
-          <div class="app-version">v1.0</div>
+          地震情報<span class="app-version">v1.0</span>
         </div>
       </div>
       
       
       <div class="control-bar">
-        <button id="subscribeButton" class="pill-btn primary">
-          <span></span>通知許可
-        </button>
-        <button id="testNotificationButton" class="pill-btn">
-          <span></span>テスト
-        </button>
         <button class="pill-btn" onclick="scrollToEewSection()">緊急地震速報</button>
         <button class="pill-btn" onclick="scrollToTsunamiSection()">津波情報</button>
         <button id="reloadButton" class="pill-btn">再読み込み</button>
@@ -944,44 +1114,50 @@
   </div>
 
   <div id="earthquakeDetailTemplate" class="detail-view">
-    <div class="detail-nav">
-      <button class="btn-text" onclick="closeDetail('earthquakeDetailTemplate')">キャンセル</button>
-      <div class="detail-title">地震詳細</div>
-      <button class="btn-text bold" onclick="closeDetail('earthquakeDetailTemplate')">完了</button>
-    </div>
-    <div class="detail-scroll-area">
-      <div class="detail-card" id="earthquakeDetailInfo"></div>
-      <div class="section-title" style="padding-left: 0;">共有メッセージの編集</div>
-      <textarea class="textarea-ios" id="earthquakeDetailTextarea"></textarea>
-      <button class="btn-block" id="earthquakeShareButton">共有する</button>
+    <div class="detail-container">
+      <div class="detail-nav">
+        <button class="btn-text" onclick="closeDetail('earthquakeDetailTemplate')">キャンセル</button>
+        <div class="detail-title">地震詳細</div>
+        <button class="btn-text bold" onclick="closeDetail('earthquakeDetailTemplate')">完了</button>
+      </div>
+      <div class="detail-scroll-area">
+        <div class="detail-card" id="earthquakeDetailInfo"></div>
+        <div class="section-title" style="padding-left: 0;">共有メッセージの編集</div>
+        <textarea class="textarea-ios" id="earthquakeDetailTextarea"></textarea>
+        <button class="btn-block" id="earthquakeShareButton">共有する</button>
+      </div>
     </div>
   </div>
 
   <div id="eewDetailTemplate" class="detail-view">
-    <div class="detail-nav">
-      <button class="btn-text" onclick="closeDetail('eewDetailTemplate')">キャンセル</button>
-      <div class="detail-title">緊急地震速報</div>
-      <button class="btn-text bold" onclick="closeDetail('eewDetailTemplate')">完了</button>
-    </div>
-    <div class="detail-scroll-area">
-      <div class="detail-card" id="eewDetailInfo"></div>
-      <div class="section-title" style="padding-left: 0;">共有メッセージの編集</div>
-      <textarea class="textarea-ios" id="eewDetailTextarea"></textarea>
-      <button class="btn-block" id="eewShareButton">共有する</button>
+    <div class="detail-container">
+      <div class="detail-nav">
+        <button class="btn-text" onclick="closeDetail('eewDetailTemplate')">キャンセル</button>
+        <div class="detail-title">緊急地震速報</div>
+        <button class="btn-text bold" onclick="closeDetail('eewDetailTemplate')">完了</button>
+      </div>
+      <div class="detail-scroll-area">
+        <div class="detail-card" id="eewDetailInfo"></div>
+        <div class="section-title" style="padding-left: 0;">共有メッセージの編集</div>
+        <textarea class="textarea-ios" id="eewDetailTextarea"></textarea>
+        <button class="btn-block" id="eewShareButton">共有する</button>
+      </div>
     </div>
   </div>
 
   <div id="tsunamiDetailTemplate" class="detail-view">
-    <div class="detail-nav">
-      <button class="btn-text" onclick="closeDetail('tsunamiDetailTemplate')">キャンセル</button>
-      <div class="detail-title">津波情報</div>
-      <button class="btn-text bold" onclick="closeDetail('tsunamiDetailTemplate')">完了</button>
-    </div>
-    <div class="detail-scroll-area">
-      <div class="detail-card" id="tsunamiDetailInfo"></div>
-      <div class="section-title" style="padding-left: 0;">共有メッセージの編集</div>
-      <textarea class="textarea-ios" id="tsunamiDetailTextarea"></textarea>
-      <button class="btn-block" id="tsunamiShareButton">共有する</button>
+    <div class="detail-container">
+      <div class="detail-nav">
+        <button class="btn-text" onclick="closeDetail('tsunamiDetailTemplate')">キャンセル</button>
+        <div class="detail-title">津波情報</div>
+        <button class="btn-text bold" onclick="closeDetail('tsunamiDetailTemplate')">完了</button>
+      </div>
+      <div class="detail-scroll-area">
+        <div class="detail-card" id="tsunamiDetailInfo"></div>
+        <div class="section-title" style="padding-left: 0;">共有メッセージの編集</div>
+        <textarea class="textarea-ios" id="tsunamiDetailTextarea"></textarea>
+        <button class="btn-block" id="tsunamiShareButton">共有する</button>
+      </div>
     </div>
   </div>
 
@@ -1848,13 +2024,27 @@
       return outputArray;
     }
 
+    // Cache map for Tsunami detailed data to prevent redundant requests
+    const tsunamiCache = new Map();
+
     async function fetchAllData() {
-      await Promise.all([
-        fetchEarthquakeInfo().catch(console.error),
-        fetchEewInfo().catch(console.error),
-        fetchTsunamiInfo().catch(console.error),
-        fetchAdminMessage().catch(console.error)
-      ]);
+      const indicator = document.getElementById('refreshIndicator');
+      if (indicator) indicator.classList.add('show');
+      
+      try {
+        await Promise.all([
+          fetchEarthquakeInfo().catch(console.error),
+          fetchEewInfo().catch(console.error),
+          fetchTsunamiInfo().catch(console.error),
+          fetchAdminMessage().catch(console.error)
+        ]);
+      } finally {
+        if (indicator) {
+          setTimeout(() => {
+            indicator.classList.remove('show');
+          }, 600);
+        }
+      }
     }
 
     async function fetchEarthquakeInfo() {
@@ -1897,10 +2087,15 @@
         for (let i = 0; i < Math.min(tsunamiList.length, 10); i += batchSize) {
           const batch = tsunamiList.slice(i, i + batchSize);
           const batchPromises = batch.map(async (tsunami) => {
+            if (tsunamiCache.has(tsunami.json)) {
+              return tsunamiCache.get(tsunami.json);
+            }
             try {
               const detailResponse = await fetch(`https://www.jma.go.jp/bosai/tsunami/data/${tsunami.json}`);
               const detailData = await detailResponse.json();
-              return { summary: tsunami, details: detailData };
+              const result = { summary: tsunami, details: detailData };
+              tsunamiCache.set(tsunami.json, result);
+              return result;
             } catch (detailError) {
               console.error(`Error fetching tsunami details for ${tsunami.json}:`, detailError);
               return { summary: tsunami, details: null };
@@ -1949,19 +2144,21 @@
 
         const listItem = document.createElement('div');
         listItem.className = 'list-item';
+        listItem.style.setProperty('--animation-delay', `${index * 0.05}s`);
 
         listItem.innerHTML = `
           <div class="list-content" onclick="showEarthquakeDetail(${index})">
             <div class="item-top-row">
               <div class="item-title">
                 <span class="shindo-circle ${circleClass}">${displayScaleText}</span>
-                ${hypocenter}
+                <span class="hypocenter-name" style="font-weight: 600;">${hypocenter}</span>
               </div>
               <div class="item-time">${date} ${timeStr}</div>
             </div>
-            <div class="item-subtitle">M${magnitude} / 最大震度${displayScaleText}</div>
-            <div class="item-detail-text">
-              ${tsunamiBadge}
+            <div class="item-meta">
+              <span class="meta-pill">M${magnitude}</span>
+              <span class="meta-pill">震度${displayScaleText}</span>
+              ${tsunamiBadge ? `<span class="tsunami-badge-wrapper">${tsunamiBadge}</span>` : ''}
             </div>
           </div>
           <div class="item-actions">
@@ -1994,6 +2191,7 @@
 
       const listItem = document.createElement('div');
       listItem.className = 'list-item';
+      listItem.style.setProperty('--animation-delay', '0.05s');
 
       const time = data.OriginTime ? data.OriginTime.split(' ')[1] : '';
       const isCancel = data.isCancel;
@@ -2013,14 +2211,16 @@
           <div class="item-top-row">
             <div class="item-title">
               <span class="badge ${badgeClass}">${badgeText}</span>
-              ${isCancel ? '取消報' : `最大震度${maxIntensity}`}
+              ${isCancel ? '取消報' : `<span class="eew-intensity-label" style="font-weight: 700;">推定最大震度 ${maxIntensity}</span>`}
             </div>
             <div class="item-time">${time}</div>
           </div>
           ${!isCancel ? `
-            <div class="item-subtitle">${hypocenter}</div>
-            <div class="item-detail-text">
-              第${data.Serial}報 ${data.isAssumption ? '(推定値)' : ''}
+            <div class="item-subtitle" style="font-weight: 600; margin-top: 4px; font-size: 15px;">震源地: ${hypocenter}</div>
+            <div class="item-meta">
+              <span class="meta-pill primary">第${data.Serial}報</span>
+              ${data.isAssumption ? '<span class="meta-pill warning">推定値</span>' : ''}
+              ${data.isFinal ? '<span class="meta-pill info">最終報</span>' : ''}
             </div>
           ` : '<div class="item-subtitle">先程の速報は取り消されました</div>'}
         </div>
@@ -2101,17 +2301,21 @@
 
         const listItem = document.createElement('div');
         listItem.className = 'list-item';
+        listItem.style.setProperty('--animation-delay', `${index * 0.05}s`);
 
         listItem.innerHTML = `
           <div class="list-content" onclick="showTsunamiDetail(${index})">
             <div class="item-top-row">
               <div class="item-title">
                 <span class="badge ${badgeClass}">${badgeText}</span>
-                ${date} ${timeStr}
+                <span class="hypocenter-name" style="font-weight: 600;">${hypocenter}</span>
               </div>
+              <div class="item-time">${date} ${timeStr}</div>
             </div>
-            <div class="item-subtitle">${hypocenter} ${magnitude}</div>
-            <div class="item-detail-text">
+            <div class="item-meta">
+              <span class="meta-pill">${magnitude}</span>
+            </div>
+            <div class="item-detail-text" style="margin-top: 4px;">
               ${detailText}
             </div>
           </div>
@@ -2228,20 +2432,46 @@
 
     function openDetail(templateId) {
       const template = document.getElementById(templateId);
+      const container = template.querySelector('.detail-container');
+      const backdrop = document.getElementById('modalBackdrop');
+      
+      backdrop.style.display = 'block';
+      // Force reflow
+      backdrop.offsetHeight;
+      backdrop.classList.add('show');
+      
       template.style.display = 'flex';
-      template.style.animation = 'slideUp 0.3s cubic-bezier(0.16, 1, 0.3, 1)';
+      container.style.animation = 'slideUp 0.3s cubic-bezier(0.16, 1, 0.3, 1) forwards';
       document.body.style.overflow = 'hidden';
     }
 
     function closeDetail(templateId) {
       const template = document.getElementById(templateId);
-      template.style.animation = 'slideDown 0.3s cubic-bezier(0.16, 1, 0.3, 1) forwards';
+      const container = template.querySelector('.detail-container');
+      const backdrop = document.getElementById('modalBackdrop');
+      
+      container.style.animation = 'slideDown 0.3s cubic-bezier(0.16, 1, 0.3, 1) forwards';
+      backdrop.classList.remove('show');
 
       setTimeout(() => {
         template.style.display = 'none';
-        template.style.animation = '';
-        document.body.style.overflow = '';
+        container.style.animation = '';
+        
+        const anyOpen = Array.from(document.querySelectorAll('.detail-view')).some(el => el.style.display === 'flex');
+        if (!anyOpen) {
+          backdrop.style.display = 'none';
+          document.body.style.overflow = '';
+        }
       }, 300);
+    }
+
+    function closeAllDetails() {
+      const openViews = document.querySelectorAll('.detail-view');
+      openViews.forEach(view => {
+        if (view.style.display === 'flex') {
+          closeDetail(view.id);
+        }
+      });
     }
 
     function formatEewMessage(data) {
@@ -2249,23 +2479,43 @@
       magnitude = typeof magnitude === "number" || (typeof magnitude === "string" && !isNaN(magnitude))
         ? parseFloat(magnitude).toFixed(1) : "不明";
 
-      let depth = data.Depth;
-      depth = typeof depth === "number" || (typeof depth === "string" && !isNaN(depth))
-        ? `約${parseFloat(depth)}km` : "不明";
-
-      const isWarning = data.isWarn === true;
-      const typeStr = isWarning ? "警報" : "予報";
-
-      let formattedDate = "不明";
-      if (data.OriginTime) {
-        const dateParts = data.OriginTime.split(' ')[0].split('/');
-        const timeParts = data.OriginTime.split(' ')[1].split(':');
-        if (dateParts.length >= 3 && timeParts.length >= 2) {
-          formattedDate = `${dateParts[1]}/${dateParts[2]} ${timeParts[0]}:${timeParts[1]}頃`;
+      let depthStr = "不明";
+      if (typeof data.Depth === "number" || (typeof data.Depth === "string" && !isNaN(data.Depth))) {
+        const d = parseFloat(data.Depth);
+        if (d === 0) {
+          depthStr = "ごく浅い";
+        } else {
+          depthStr = `${d}km`;
         }
       }
 
-      let message = `【EWC緊急地震速報(${typeStr})】\n震源地：${data.Hypocenter}\n推定最大震度：${data.MaxIntensity}\n規模：M${magnitude}\n深さ：${depth}\n日時：${formattedDate}`;
+      let formattedDate = "不明";
+      if (data.OriginTime) {
+        const match = data.OriginTime.match(/^(\d{4})\/(\d{2})\/(\d{2})\s+(\d{2}):(\d{2}):(\d{2})$/);
+        if (match) {
+          formattedDate = `${match[1]}年${match[2]}月${match[3]}日 ${match[4]}時${match[5]}分${match[6]}秒頃`;
+        } else {
+          // fallback
+          const dateParts = data.OriginTime.split(' ');
+          if (dateParts.length >= 2) {
+            const dp = dateParts[0].split('/');
+            const tp = dateParts[1].split(':');
+            if (dp.length >= 3 && tp.length >= 3) {
+              formattedDate = `${dp[0]}年${dp[1]}月${dp[2]}日 ${tp[0]}時${tp[1]}分${tp[2]}秒頃`;
+            } else {
+              formattedDate = data.OriginTime + "頃";
+            }
+          } else {
+            formattedDate = data.OriginTime + "頃";
+          }
+        }
+      }
+
+      const serialStr = data.Serial || "不明";
+      const finalStr = data.isFinal ? "（最終報）" : "";
+      const maxIntensity = data.MaxIntensity || "不明";
+
+      let message = `【EWC緊急地震速報　推定震度${maxIntensity}】（第${serialStr}報${finalStr}）\n${formattedDate}、地震が発生した模様です。震源地は${data.Hypocenter || '不明'}で、震源の深さは${depthStr}、地震の規模を示すマグニチュードは${magnitude}と推定されます。`;
 
       if (data.WarnArea && Array.isArray(data.WarnArea) && data.WarnArea.length > 0) {
         message += `\n\n[予想される震度]`;
@@ -2379,12 +2629,123 @@
       }
     }, { passive: true });
 
-    document.getElementById('subscribeButton').addEventListener('click', () => subscribe().catch(console.error));
-    document.getElementById('testNotificationButton').addEventListener('click', () => sendTestNotification().catch(console.error));
-    document.getElementById('reloadButton').addEventListener('click', () => location.reload());
+    // Pull to Refresh Implementation
+    let startY = 0;
+    let currentY = 0;
+    let isPulling = false;
+    const pullRefreshEl = document.getElementById('pullRefresh');
+    const pullRefreshSpan = pullRefreshEl.querySelector('span');
+
+    window.addEventListener('touchstart', (e) => {
+      if (window.scrollY === 0) {
+        startY = e.touches[0].pageY;
+        isPulling = true;
+      }
+    }, { passive: true });
+
+    window.addEventListener('touchmove', (e) => {
+      if (!isPulling) return;
+      currentY = e.touches[0].pageY;
+      const diff = currentY - startY;
+
+      if (diff > 0) {
+        const pullDistance = Math.min(diff * 0.4, 80);
+        pullRefreshEl.style.display = 'flex';
+        pullRefreshEl.style.transform = `translateX(-50%) translateY(${pullDistance}px)`;
+        if (pullDistance > 50) {
+          pullRefreshSpan.textContent = '指を離して更新...';
+        } else {
+          pullRefreshSpan.textContent = '引っ張って更新...';
+        }
+      }
+    }, { passive: true });
+
+    window.addEventListener('touchend', async () => {
+      if (!isPulling) return;
+      isPulling = false;
+      const diff = currentY - startY;
+      
+      if (diff > 120) {
+        pullRefreshEl.classList.add('active');
+        pullRefreshEl.style.transform = 'translateX(-50%) translateY(50px)';
+        pullRefreshSpan.textContent = 'データを更新中...';
+        
+        try {
+          await fetchAllData();
+        } catch (err) {
+          console.error(err);
+        }
+        pullRefreshEl.classList.remove('active');
+      }
+      
+      pullRefreshEl.style.transition = 'transform 0.3s ease, opacity 0.3s ease';
+      pullRefreshEl.style.transform = 'translateX(-50%) translateY(-20px)';
+      pullRefreshEl.style.opacity = '0';
+      
+      setTimeout(() => {
+        pullRefreshEl.style.display = 'none';
+        pullRefreshEl.style.transition = '';
+        pullRefreshEl.style.opacity = '1';
+      }, 300);
+      
+      startY = 0;
+      currentY = 0;
+    });
+
+    document.getElementById('reloadButton').addEventListener('click', () => fetchAllData().catch(console.error));
+
+    // Design Feedback Widget
+    function initFeedbackWidget() {
+      const voted = localStorage.getItem('ewc_feedback_voted');
+      if (voted) return; // already voted, don't show it
+
+      const widget = document.createElement('div');
+      widget.className = 'feedback-widget';
+      widget.id = 'feedbackWidget';
+      widget.innerHTML = `
+        <button class="feedback-close" onclick="closeFeedbackWidget()">×</button>
+        <div class="feedback-title">このデザインは気に入りましたか？</div>
+        <div class="feedback-buttons">
+          <button class="feedback-btn like" onclick="submitFeedback('like')">はい</button>
+          <button class="feedback-btn dislike" onclick="submitFeedback('dislike')">いいえ</button>
+        </div>
+      `;
+      document.body.appendChild(widget);
+    }
+
+    window.closeFeedbackWidget = function() {
+      localStorage.setItem('ewc_feedback_voted', 'dismissed');
+      const widget = document.getElementById('feedbackWidget');
+      if (widget) {
+        widget.style.opacity = '0';
+        widget.style.transform = 'translateY(10px)';
+        setTimeout(() => widget.remove(), 300);
+      }
+    };
+
+    window.submitFeedback = function(type) {
+      if (typeof gtag === 'function') {
+        gtag('event', 'design_feedback', {
+          'feedback_value': type
+        });
+      }
+      
+      localStorage.setItem('ewc_feedback_voted', type);
+
+      const widget = document.getElementById('feedbackWidget');
+      if (widget) {
+        widget.innerHTML = `<div class="feedback-title" style="color: var(--ios-green); text-align: center; padding-right: 0;">ご協力ありがとうございました！</div>`;
+        setTimeout(() => {
+          widget.style.opacity = '0';
+          widget.style.transform = 'translateY(10px)';
+          setTimeout(() => widget.remove(), 300);
+        }, 2000);
+      }
+    };
 
     document.addEventListener('DOMContentLoaded', () => {
       fetchAllData();
+      initFeedbackWidget();
 
       document.addEventListener('click', (e) => {
         const button = e.target.closest('[data-action]');
